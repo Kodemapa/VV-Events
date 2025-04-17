@@ -1,0 +1,859 @@
+﻿<!doctype html>
+<html class="no-js" lang="en">
+    <head>
+        <title>{{ site_title|default('Crafto - The Multipurpose HTML5 Template') }}</title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="author" content="ThemeZaa">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <meta name="description" content="{{ site_description|default('Elegant jewelry store with a wide collection of rings, earrings, necklaces, and bracelets.') }}">
+        <!-- favicon icon -->
+        <link rel="shortcut icon" href="{{ static_url('images/favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ static_url('images/apple-touch-icon-57x57.png') }}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ static_url('images/apple-touch-icon-72x72.png') }}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ static_url('images/apple-touch-icon-114x114.png') }}">
+        <!-- google fonts preconnect -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <!-- bubblemorph add-on files -->
+        <link rel='stylesheet' href="{{ static_url('revolution/revolution-addons/bubblemorph/css/revolution.addon.bubblemorph.css') }}" type='text/css' media='all' />
+        <!-- slider revolution CSS files -->
+        <link rel="stylesheet" type="text/css" href="{{ static_url('revolution/css/settings.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ static_url('revolution/css/layers.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ static_url('revolution/css/navigation.css') }}">
+        <!-- style sheets and font icons  -->
+        <link rel="stylesheet" href="{{ static_url('css/vendors.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/icon.min.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/style.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('css/responsive.css') }}"/>
+        <link rel="stylesheet" href="{{ static_url('demos/jewellery-store/jewellery-store.css') }}" />
+    </head>
+    <body data-mobile-nav-style="classic">
+        <!-- start header -->
+        <header class="header-with-topbar">
+            <!-- start header top bar -->
+            <div class="header-top-bar top-bar-light bg-dark-gray disable-fixed md-border-bottom border-color-transparent-dark-very-light">
+                <div class="container-fluid">
+                    <div class="row h-40px align-items-center m-0">
+                        <div class="col-12 justify-content-center alt-font">
+                            <div class="fs-13 text-white text-uppercase">{{ promo_message|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>   
+                            <a href="/offers" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">Get offers</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end header top bar -->
+            <!-- start navigation -->
+            <nav class="navbar navbar-expand-lg header-light bg-white disable-fixed">
+                <div class="container-fluid">
+                    <div class="col-auto col-lg-5 menu-order position-static">
+                        <button class="navbar-toggler float-start" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-line"></span>
+                            <span class="navbar-toggler-line"></span>
+                            <span class="navbar-toggler-line"></span>
+                            <span class="navbar-toggler-line"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav"> 
+                            <ul class="navbar-nav alt-font"> 
+                                {% for item in nav_items %}
+                                <li class="nav-item {{ 'dropdown submenu' if item.dropdown }}">
+                                    <a href="/{{ item.url }}" class="nav-link">{{ item.name }}</a>
+                                    {% if item.dropdown %}
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink{{ loop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
+                                        {% if item.mega_menu %}
+                                        <div class="d-lg-flex mega-menu m-auto flex-column">
+                                            <div class="row row-cols-1 row-cols-lg-5 mb-50px md-mb-20px">
+                                                {% for category in item.categories %}
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">{{ category.name }}</li>
+                                                        {% for subitem in category.subitems %}
+                                                        <li><a href="/shop/{{ category.name|lower }}/{{ subitem|lower }}">{{ subitem }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="row row-cols-1 row-cols-md-2">
+                                                {% for banner in item.banners %}
+                                                <div class="col">
+                                                    <a href="/{{ banner.url }}"><img src="{{ banner.image }}" class="border-radius-4px w-100" alt="{{ banner.alt }}"></a>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% elif item.categories_grid %}
+                                        <div class="mega-menu m-auto">
+                                            <div class="row md-m-0">
+                                                <div class="col-12 col-lg-9">
+                                                    <div class="row row-cols-1 row-cols-lg-4 align-items-center justify-content-center">
+                                                        {% for category in item.grid_categories %}
+                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
+                                                            <a href="/categories/{{ category.name|lower }}" class="d-none d-lg-block"> 
+                                                                <img src="{{ category.image }}" class="border-radius-4px mb-5px" alt="{{ category.name }}">  
+                                                            </a>
+                                                            <a href="/categories/{{ category.name|lower }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                <span> 
+                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ category.name }}</span> 
+                                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                </span>
+                                                            </a> 
+                                                        </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-3 col-md-4 d-none d-lg-flex">
+                                                    <div>
+                                                        <a href="/categories"><img src="{{ item.featured_image }}" class="border-radius-4px" alt="Featured Category"></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
+                                            {% for subitem in item.subitems %}
+                                            <li><a href="/{{ subitem.url }}">{{ subitem.name }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                        {% endif %}
+                                    </div>
+                                    {% endif %}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 justify-content-end justify-content-lg-center">
+                        <a class="navbar-brand" href="/">
+                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="default-logo">
+                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="alt-logo">
+                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="mobile-logo"> 
+                        </a>
+                    </div>
+                    <div class="col-auto col-lg-5 justify-content-end ms-auto md-pe-0">
+                        <div class="header-icon">
+                            <div class="widget-text icon alt-font fw-500 d-none d-sm-flex">
+                                <a href="/wishlist">Wishlist</a>
+                            </div>
+                            <div class="header-account-icon icon alt-font">
+                                <div class="header-account dropdown"> 
+                                    <a href="javascript:void(0);" class="fw-500">
+                                        <i class="feather icon-feather-user d-inline-block d-sm-none fs-18"></i>
+                                        <span class="d-none d-sm-inline-block">My account</span>
+                                    </a>
+                                    <ul class="account-item-list">
+                                        {% for account_item in account_items %}
+                                        <li class="account-item"><a href="/{{ account_item.url }}">{{ account_item.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div> 
+                            </div>
+                            <div class="header-search-icon icon">
+                                <a href="javascript:void(0)" class="search-form-icon header-search-form xs-ps-10px"><i class="feather icon-feather-search"></i></a> 
+                                <div class="search-form-wrapper">
+                                    <button title="Close" type="button" class="search-close alt-font">×</button>
+                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="/search">
+                                        <div class="search-form-box">
+                                            <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">What are you looking for?</h2>
+                                            <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="Enter your keywords..." name="s" value="" type="text" autocomplete="off">
+                                            <button type="submit" class="search-button">
+                                                <i class="feather icon-feather-search" aria-hidden="true"></i> 
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="header-cart-icon icon">
+                                <div class="header-cart dropdown">
+                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_items|length }}</span></a> 
+                                    <ul class="cart-item-list">
+                                        {% for item in cart_items %}
+                                        <li class="cart-item align-items-center">
+                                            <a href="javascript:void(0);" class="alt-font close">×</a>
+                                            <div class="product-image">
+                                                <a href="/product/{{ item.id }}"><img src="{{ item.image }}" class="cart-thumb" alt="{{ item.name }}"></a>
+                                            </div>
+                                            <div class="product-detail alt-font">
+                                                <a href="/product/{{ item.id }}">{{ item.name }}</a>
+                                                <span class="item-ammount">${{ "%.2f"|format(item.price) }}</span> 
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                        <li class="cart-total">
+                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">${{ "%.2f"|format(cart_total) }}</span></div>
+                                            <a href="/cart" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
+                                            <a href="/checkout" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>  
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- end header -->
+        
+        <!-- start banner slider -->
+        <section class="p-0 top-space-margin">
+            <article class="content">
+                <div id="jewellery-store-slider_wrapper" class="rev_slider_wrapper fullscreen-container">
+                    <!-- the ID here will be used in the JavaScript below to initialize the slider -->
+                    <div id="jewellery-store-slider" class="rev_slider fullscreenbanner" data-version="5.4.5" >
+                        <!-- begin slides list -->
+                        <ul>
+                            {% for slide in slider_slides %}
+                            <!-- minimum slide structure -->
+                            <li data-index="rs-{{ '%02d'|format(loop.index) }}" data-transition="fade" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-thumb="http://works.themepunch.com/revolution_5_3/wp-content/" data-rotate="0" data-saveperformance="off" data-title="Slide" data-param1="{{ '%02d'|format(loop.index) }}" data-description="">
+                                <!-- slide's main background image -->
+                                <img src="{{ static_url('images/rev-trans-tile.png') }}" alt="dummy" class="rev-slidebg" data-bgcolor='#ffddc6'>
+                                <!-- start bubble layer -->
+                                <div class="tp-caption tp-no-events tp-shape tp-shapewrapper tp-bubblemorph " 
+                                     id="slide-{{ loop.index }}-layer-01" 
+                                     data-x="['right','right','right','right']" data-hoffset="['-100','-200','-150','-150']" 
+                                     data-y="['middle','top','middle','middle']" data-voffset="['-150','-100','100','100']" 
+                                     data-width="['600','500','500','400']"
+                                     data-height="['600','550','500','400']"
+                                     data-whitespace="nowrap"
+                                     data-type="shape" 
+                                     data-bubblesbg="transparent" 
+                                     data-numbubbles="6|6|6|6" 
+                                     data-bubblesbufferx="100|50|70|50" 
+                                     data-bubblesbuffery="100|50|70|50" 
+                                     data-bubblesspeedx="0.25|0.25|0.25|0.25" 
+                                     data-bubblesspeedy="0.25|0.25|0.25|0.25"
+                                     data-bubblesbordercolor="#eebaa3|#eebaa3|#eebaa3|#eebaa3" 
+                                     data-bubblesbordersize="1|1|1|1" 
+                                     data-basealign="slide" 
+                                     data-responsive_offset="on" 
+                                     data-responsive="off"
+                                     data-frames='[{"delay":800,"speed":2000,"frame":"0","from":"opacity:0;fb:30px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;","ease":"Power3.easeInOut"}]'
+                                     data-textAlign="['inherit','inherit','inherit','inherit']"
+                                     data-paddingtop="[0,0,0,0]"
+                                     data-paddingright="[0,0,0,0]"
+                                     data-paddingbottom="[0,0,0,0]"
+                                     data-paddingleft="[0,0,0,0]"
+                                     data-blendmode="multiply"
+                                     style="z-index: 0;pointer-events:none;">
+                                </div>
+                                <!-- end bubble layer -->
+                                <!-- start bubble layer -->
+                                <div class="tp-caption  tp-no-events tp-shape tp-shapewrapper tp-bubblemorph " 
+                                     id="slide-{{ loop.index }}-layer-02" 
+                                     data-x="['center','center','center','center']" data-hoffset="['0','0','-200','-100']" 
+                                     data-y="['bottom','bottom','bottom','bottom']" data-voffset="['-150','-100','0','0']" 
+                                     data-width="['600','500','500','400']"
+                                     data-height="['600','550','300','400']"
+                                     data-whitespace="nowrap"
+
+                                     data-type="shape" 
+                                     data-bubblesbg="transparent" 
+                                     data-numbubbles="6|6|6|6" 
+                                     data-bubblesbufferx="100|50|100|20" 
+                                     data-bubblesbuffery="100|50|100|20" 
+                                     data-bubblesspeedx="0.25|0.25|0.25|0.25" 
+                                     data-bubblesspeedy="0.25|0.25|0.25|0.25"
+                                     data-bubblesbordercolor="#eebaa3|#eebaa3|#eebaa3|#eebaa3" 
+
+                                     data-bubblesbordersize="1|1|1|1" 
+                                     data-basealign="slide" 
+                                     data-responsive_offset="on" 
+                                     data-responsive="off"
+                                     data-frames='[{"delay":900,"speed":2000,"frame":"0","from":"opacity:0;fb:30px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;","ease":"Power3.easeInOut"}]'
+                                     data-textAlign="['inherit','inherit','inherit','inherit']"
+                                     data-paddingtop="[0,0,0,0]"
+                                     data-paddingright="[0,0,0,0]"
+                                     data-paddingbottom="[0,0,0,0]"
+                                     data-paddingleft="[0,0,0,0]"
+                                     data-blendmode="multiply"
+                                     style="z-index: 0;pointer-events:none;">
+                                </div>
+                                <!-- end bubble layer -->
+                                <!-- start row zone layer -->
+                                <div id="rrzm_{{ 638 + loop.index }}" class="rev_row_zone rev_row_zone_middle">
+                                    <!-- start row layer -->
+                                    <div class="tp-caption content-row" 
+                                         id="slide-{{ loop.index }}-layer-03" 
+                                         data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
+                                         data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" 
+                                         data-width="auto"
+                                         data-height="full"
+                                         data-whitespace="nowrap"
+                                         data-basealign="slide"
+                                         data-type="row" 
+                                         data-columnbreak="2" 
+                                         data-responsive_offset="on" 
+                                         data-responsive="off"
+                                         data-frames='[{"delay":0,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"power3.inOut"},{"delay":"wait","speed":300,"frame":"999","to":"auto:auto;","ease":"power3.inOut"}]'
+                                         data-margintop="[0,0,0,0]"
+                                         data-marginright="[0,0,0,0]"
+                                         data-marginbottom="[0,0,0,0]"
+                                         data-marginleft="[0,0,0,0]"
+                                         data-textAlign="['inherit','inherit','inherit','inherit']"
+                                         data-paddingtop="[0,0,0,0]"
+                                         data-paddingright="[0,0,0,0]"
+                                         data-paddingbottom="[0,0,0,0]"
+                                         data-paddingleft="[0,0,0,0]">
+                                        <!-- start column layer -->
+                                        <div class="tp-caption d-flex justify-content-center flex-column column-layer" 
+                                             id="slide-{{ loop.index }}-layer-04"
+                                             data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']" 
+                                             data-y="['middle','middle','top','middle']" data-voffset="['0','0','0','0']" 
+                                             data-width="100%"
+                                             data-height="['full','full','50%','50%']"
+                                             data-whitespace="nowrap"
+                                             data-basealign="slide"
+                                             data-type="column" 
+                                             data-responsive_offset="on" 
+                                             data-responsive="off"
+                                             data-frames='[{"delay":500,"speed":1000,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"power3.inOut"},{"delay":"wait","speed":300,"frame":"999","to":"auto:auto;","ease":"power3.inOut"}]'
+                                             data-columnwidth="['50%','50%','50%','50%']"
+                                             data-columnheight="['none','none','50%','50%']"
+                                             data-verticalalign="middle"
+                                             data-margintop="[0,0,0,0]"
+                                             data-marginright="[0,0,0,0]"
+                                             data-marginbottom="[0,0,0,0]"
+                                             data-marginleft="[0,0,0,0]"
+                                             data-textAlign="['inherit','inherit','inherit','inherit']"
+                                             data-paddingtop="[0,0,0,0]"
+                                             data-paddingright="[0,0,0,0]"
+                                             data-paddingbottom="[0,0,0,0]"
+                                             data-paddingleft="[0,0,0,0]"
+                                             style=" background-image: url('{{ slide.background_image }}'); background-size: cover; background-position: top;">
+                                            <!-- start extra layer -->
+                                            <div class="wrapper-text">
+                                                <!-- start text layer -->
+                                                <div class="tp-caption alt-font text-uppercase title-text" 
+                                                     id="slide-{{ loop.index }}-layer-05"
+                                                     data-x="['left','left','left','left']" data-hoffset="['0','0','0','0']" 
+                                                     data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" 
+                                                     data-fontsize="['140','100','100','80']"
+                                                     data-lineheight="['150','90','90','80']"
+                                                     data-fontweight="['600','600','600','600']"
+                                                     data-letterspacing="['-2','-2','-2','-2']"
+                                                     data-color="['#ffffff','#ffffff','#ffffff','#ffffff']"
+                                                     data-width="100%"
+                                                     data-height="100%"
+                                                     data-whitespace="normal"
+
+                                                     data-basealign="slide"
+                                                     data-type="text" 
+                                                     data-responsive_offset="on" 
+                                                     data-verticalalign="middle"
+                                                     data-responsive="on"
+                                                     data-frames='[{"delay":"800","split":"chars","splitdelay":0.03,"speed":1000,"split_direction":"middletoedge","frame":"0","from":"x:50px;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":100,"frame":"999","to":"opacity:0;fb:0;","ease":"Power4.easeOut"}]'
+                                                     data-margintop="[0,0,0,0]"
+                                                     data-marginright="[0,0,0,0]"
+                                                     data-marginbottom="[0,0,0,0]"
+                                                     data-marginleft="[0,0,0,0]"
+                                                     data-textAlign="['center','center','center','center']"
+                                                     data-paddingtop="[0,0,0,0]"
+                                                     data-paddingright="[50,0,100,0]"
+                                                     data-paddingbottom="[0,0,0,0]"
+                                                     data-paddingleft="[50,0,100,0]"
+                                                     style="word-break: {{ 'inherit' if loop.index == 1 else 'initial' }};">
+                                                    {{ slide.title }}
+                                                </div>
+                                                <!-- end text layer -->
+                                            </div>
+                                            <!-- end extra layer -->
+                                        </div> 
+                                        <!-- end column layer -->
+                                        <!-- start column layer -->
+                                        <div class="tp-caption justify-content-center flex-column column-layer" 
+                                             id="slide-{{ loop.index }}-layer-06"
+                                             data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
+                                             data-y="['middle','middle','top','middle']" data-voffset="['0','0','0','0']" 
+                                             data-width="none"
+                                             data-height="['none','none','50%','50%']"
+                                             data-whitespace="nowrap"
+                                             data-basealign="slide"
+                                             data-type="column" 
+                                             data-responsive_offset="on" 
+                                             data-responsive="off"
+                                             data-frames='[{"delay":0,"speed":300,"frame":"0","from":"opacity:0;","to":"o:1;","ease":"power3.inOut"},{"delay":"wait","speed":300,"frame":"999","to":"auto:auto;","ease":"power3.inOut"}]'
+                                             data-columnwidth="['50%','50%','50%','50%']"
+                                             data-columnheight="['none','none','50%','50%']"
+                                             data-verticalalign="middle"
+                                             data-margintop="[0,0,50,50]"
+                                             data-marginright="[0,0,0,0]"
+                                             data-marginbottom="[0,0,50,50]"
+                                             data-marginleft="[0,0,0,0]"
+                                             data-textAlign="['center','center','center','center']"
+                                             data-paddingtop="[0,0,0,0]"
+                                             data-paddingright="[0,0,0,0]"
+                                             data-paddingbottom="[0,0,0,0]"
+                                             data-paddingleft="[0,0,0,0]">
+                                            <!-- start extra layer -->
+                                            <div class="wrapper">
+                                                <!-- start text layer -->
+                                                <div class="tp-caption text-uppercase" 
+                                                     id="slide-{{ loop.index }}-layer-07"
+                                                     data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
+                                                     data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" 
+                                                     data-fontsize="['20','18','18','18']"
+                                                     data-lineheight="['30','30','30','30']"
+                                                     data-fontweight="['600','600','600','600']"
+                                                     data-letterspacing="['13','13','13','13']"
+                                                     data-color="['#16202c','#16202c','#16202c','#16202c']"
+                                                     data-width="auto"
+                                                     data-height="auto"
+                                                     data-whitespace="normal"
+                                                     data-basealign="slide"
+                                                     data-type="text" 
+                                                     data-responsive_offset="off" 
+                                                     data-responsive="on"
+                                                     data-frames='[{"delay":"1200","speed":2000,"frame":"0","from":"y:50px;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;","ease":"Power3.easeInOut"}]'
+                                                     data-margintop="[0,0,0,0]"
+                                                     data-marginright="[0,0,0,0]"
+                                                     data-marginbottom="[0,0,0,0]"
+                                                     data-marginleft="[0,0,0,0]"
+                                                     data-textAlign="['center','center','center','center']"
+                                                     data-paddingtop="[0,0,0,0]"
+                                                     data-paddingright="[0,0,0,0]"
+                                                     data-paddingbottom="[0,0,0,0]"
+                                                     data-paddingleft="[0,0,0,0]">
+                                                    {{ slide.subtitle|default('classic jewellery') }}
+                                                </div>
+                                                <!-- end text layer -->
+                                                <!-- start image layer -->
+                                                <div class="tp-caption tp-resizeme" 
+                                                     id="slide-{{ loop.index }}-layer-08" 
+                                                     data-x="['center','center','center','center']" data-hoffset="['0','0','0','0']" 
+                                                     data-y="['middle','middle','middle','middle']" data-voffset="['0','0','0','0']" 
+                                                     data-width="none"
+                                                     data-height="none"
+                                                     data-whitespace="nowrap"
+                                                     data-responsive_offset="on"
+                                                     data-frames='[{"delay":1000,"speed":2000,"frame":"0","from":"y:50px;rX:-5deg;opacity:0;fg:0;","to":"o:1;fg:0;","ease":"Power4.easeOut"},{"delay":"wait","speed":300,"frame":"999","to":"opacity:0;fg:0;","ease":"Power3.easeInOut"},{"frame":"hover","speed":"500","ease":"Power2.easeInOut","to":"o:1;sX:0.98;sY:0.98;rX:0;rY:0;rZ:0;z:0;","style":"c:rgb(255,255,255);"}]'
+                                                     data-textAlign="['inherit','inherit','inherit','inherit']"
+                                                     data-paddingtop="[0,0,0,0]"
+                                                     data-paddingright="[0,0,0,0]"
+                                                     data-paddingbottom="[0,0,0,0]"
+                                                     data-paddingleft="[0,0,0,0]"
+                                                     data-margintop="[50,30,20,10]"
+                                                     data-marginright="[0,0,0,0]"
+                                                     data-marginbottom="[0,0,0,0]"
+                                                     data-marginleft="[0,0,0,0]">
+                                                    <img src="{{ slide.product_image }}" alt="{{ slide.title }}" data-ww="['100%','100%','350','270']" data-hh="['100%','100%','350','270']" width="450" height="450">
+                                                </div>
+                                                <!-- end image layer -->
+                                                <!-- start button layer -->
+                                                <a class="tp-caption btn rev-btn d-inline-block text-uppercase bg-white shop-btn" 
+                                                   href="/shop"
+                                                   id="slide-{{ loop.index }}-layer-09" 
+                                                   data-x="['center','left','left','left']" data-hoffset="['0','0','0','0']" 
+                                                   data-y="['top','top','top','top']" data-voffset="['0','0','0','0']" 
+                                                   data-fontsize="['15','15','13','13']"
+                                                   data-lineheight="['60','60','50','50']"
+                                                   data-width="['280','280','250','250']"
+                                                   data-height="none"
+                                                   data-whitespace="normal"
+                                                   data-fontweight="['500','500','500','500']"
+                                                   data-letterspacing="['2','2','2','2']"
+                                                   data-color="['#232323','#232323','#232323','#232323'"
+                                                   data-type="button" 
+                                                   data-actions=''
+                                                   data-responsive_offset="off" 
+                                                   data-responsive="on"
+                                                   data-frames='[{"delay":"1600","speed":2000,"frame":"0","from":"y:50px;opacity:0;fb:10px;","to":"o:1;fb:0;","ease":"Power3.easeInOut"},{"delay":"wait","speed":600,"frame":"999","to":"auto:auto;fb:0;c:rgb(35,35,35)","ease":"Power3.easeInOut"},{"frame":"hover","speed":"200","ease":"Power1.easeInOut","to":"o:1;rX:0;rY:0;rZ:0;z:0;fb:0;","style":"c:rgb(35,35,35);bg:rgb(255,255,255);"}]'
+                                                   data-margintop="[0,40,30,20]"
+                                                   data-marginright="[0,0,0,0]"
+                                                   data-marginbottom="[0,0,0,0]"
+                                                   data-marginleft="[0,0,0,0]"
+                                                   data-textAlign="['center','center','center','center']"
+                                                   data-paddingtop="[0,0,0,0]"
+                                                   data-paddingright="[0,0,0,0]"
+                                                   data-paddingbottom="[0,0,0,0]"
+                                                   data-paddingleft="[0,0,0,0]">
+                                                    {{ slide.button_text|default('Shop this collection') }}</a>
+                                                <!-- end button layer -->
+                                            </div>
+                                            <!-- end extra layer -->
+                                        </div>
+                                        <!-- end column layer -->
+                                    </div>
+                                    <!-- end row layer -->
+                                </div>
+                                <!-- end row zone layer -->
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </article>
+        </section>
+        <!-- end banner slider -->
+        
+        <!-- start section -->
+        <section class="border-bottom pt-45px pb-45px">
+            <div class="container">
+                <div class="row row-cols-1 row-cols-lg-4 row-cols-md-2" data-anime='{ "el": "childs", "translateX": [30, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'>
+                    {% for feature in features %}
+                    <!-- start features box item -->
+                    <div class="col icon-with-text-style-01 md-mb-25px">
+                        <div class="feature-box feature-box-left-icon-middle last-paragraph-no-margin">
+                            <div class="feature-box-icon me-25px">
+                                <i class="{{ feature.icon }} icon-large text-dark-gray"></i>
+                            </div>
+                            <div class="feature-box-content">
+                                <span class="fs-19 fw-500 d-block alt-font text-dark-gray">{{ feature.title }}</span>
+                                <p class="lh-24">{{ feature.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end features box item -->
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+        <!-- end section -->
+        
+        <!-- start section -->
+        <section>
+            <div class="container">
+                <div class="row justify-content-center mb-4" data-anime='{ "el": "childs", "translateY": [15, 0], "opacity": [0,1], "duration": 800, "delay": 200, "staggervalue": 300, "easing": "easeOutQuad" }'>
+                    <div class="col-xl-5 col-lg-6 col-md-8 text-center last-paragraph-no-margin">
+                        <h3 class="fw-500 ls-minus-1px text-dark-gray mb-10px">{{ categories_title|default('Shop by categories') }}</h3>
+                        <p>{{ categories_description|default('Lorem ipsum dolor amet consectetur adipiscing dictum placerat diam in vestibulum vivamus in eros.') }}</p>
+                    </div>
+                </div>
+                <div class="row g-0">
+                    <div class="col-12">
+                        <ul class="portfolio-wrapper grid-loading shop-category-02 shop-grid grid grid-3col xxl-grid-3col md-grid-2col xs-grid-1col gutter-extra-large text-center" data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 500, "delay": 0, "staggervalue": 300, "easing": "easeOutQuad" }'>
+                            <li class="grid-sizer"></li>
+                            {% for category in shop_categories %}
+                            <!-- start shop item -->
+                            <li class="grid-item"> 
+                                <div class="category-box bg-dark-gray">
+                                    <div class="category-image">
+                                        <img src="{{ category.image }}" alt="{{ category.name }}">
+                                    </div>
+                                    <div class="category-title absolute-middle-left">
+                                        <h3 class="text-white alt-font fw-600 mb-0 text-shadow-large">{{ category.name }}</h3>
+                                    </div>
+                                    <div class="category-hover-content d-flex flex-column align-items-center justify-content-center bg-base-color p-40px lg-p-25px">
+                                        <h3 class="title text-dark-gray alt-font fw-600 position-relative z-index-1 ls-minus-1px">{{ category.name }}<span class="absolute-middle-center text-light-orange z-index-minus-1 fs-150 opacity-6">{{ category.name[0] }}</span></h3>
+                                        <a class="fs-14 fw-500 text-dark-gray text-uppercase position-absolute z-index-1 bottom-25px ls-05px" href="/shop/{{ category.name|lower }}">View collection</a>
+                                    </div>
+                                </div> 
+                            </li>
+                            <!-- end shop item -->
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end section -->
+        
+        <!-- start section -->
+        <section class="pt-0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 tab-style-04">
+                        <ul class="nav nav-tabs fs-32 alt-font border-0 justify-content-center mb-4 ls-minus-05px">
+                            {% for tab in product_tabs %}
+                            <li class="nav-item"><a data-bs-toggle="tab" href="#{{ tab.id }}" class="nav-link {{ 'active' if loop.first }}">{{ tab.name }}<span class="tab-border bg-dark-gray"></span></a></li>
+                            {% endfor %}
+                        </ul>
+                        <div class="tab-content">
+                            {% for tab in product_tabs %}
+                            <!-- start tab content -->
+                            <div class="tab-pane fade {{ 'in active show' if loop.first }}" id="{{ tab.id }}">
+                                <ul class="shop-modern shop-wrapper grid-loading grid grid-4col md-grid-3col sm-grid-2col xs-grid-1col gutter-extra-large text-center" data-anime='{ "el": "childs", "translateY": [15, 0], "translateX": [-15, 0], "opacity": [0,1], "duration": 500, "delay": 0, "staggervalue": 150, "easing": "easeOutQuad" }'>
+                                    <li class="grid-sizer"></li>
+                                    {% for product in tab.products %}
+                                    <!-- start shop item -->
+                                    <li class="grid-item">
+                                        <div class="shop-box mb-10px">
+                                            <div class="shop-image mb-25px">
+                                                <a href="/product/{{ product.id }}">
+                                                    <img src="{{ product.image }}" alt="{{ product.name }}"> 
+                                                    {% if product.label %}
+                                                    <span class="lable {{ product.label|lower }}">{{ product.label }}</span>
+                                                    {% endif %}
+                                                </a>
+                                                <div class="shop-buttons-wrap">
+                                                    <a href="/add_to_cart/{{ product.id }}" class="alt-font btn btn-small btn-box-shadow btn-dark-gray btn-round-edge left-icon add-to-cart">
+                                                        <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                                    </a>
+                                                </div>
+                                                <div class="shop-hover d-flex justify-content-center"> 
+                                                    <ul>
+                                                        <li>
+                                                            <a href="/add_to_wishlist/{{ product.id }}" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="/quick_view/{{ product.id }}" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                                        </li>
+                                                    </ul> 
+                                                </div>
+                                            </div>
+                                            <div class="shop-footer text-center">
+                                                <a href="/product/{{ product.id }}" class="text-dark-gray fs-19 fw-500">{{ product.name }}</a>
+                                                <div class="price">{% if product.old_price %}<del>${{ "%.2f"|format(product.old_price) }}</del>{% endif %}${{ "%.2f"|format(product.price) }}</div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- end shop item -->
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <!-- end tab content -->
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end section -->
+        
+        <!-- Additional sections would follow the same pattern -->
+        
+        <!-- start footer -->
+        <footer class="footer-dark bg-seashell-white pb-0 cover-background" style="background-image: url('{{ static_url('images/demo-jewellery-store-footer-bg.jpg') }}');">
+            <div class="container">
+                <div class="row justify-content-center mb-4 sm-mb-35px">
+                    <!-- start footer column -->
+                    <div class="col-6 col-lg-3 last-paragraph-no-margin order-sm-1 md-mb-50px xs-mb-30px">
+                        <a href="/" class="footer-logo d-inline-block mb-20px"><img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}"></a>
+                        <span class="lh-22 alt-font fw-500 text-dark-gray d-block w-80 lg-w-100 mb-15px">{{ footer_description|default('Please reach out to when you need support.') }}</span>
+                        <div class="fs-16 text-brown"><i class="feather icon-feather-phone-call icon-small me-10px xs-me-5px text-dark-gray"></i><a href="tel:{{ contact_phone|default('11234567890') }}">+{{ contact_phone|default('1 1234567890') }}</a></div>
+                        <div class="fs-16"><i class="feather icon-feather-mail icon-small me-10px xs-me-5px text-dark-gray"></i><a href="mailto:{{ contact_email|default('info@domain.com') }}">{{ contact_email|default('info@domain.com') }}</a></div>
+                    </div>
+                    <!-- end footer column -->
+                    
+                    {% for footer_col in footer_columns %}
+                    <!-- start footer column -->
+                    <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ footer_col.title }}</span>
+                        <ul class="fs-16">
+                            {% for link in footer_col.links %}
+                            <li><a href="/{{ link.url }}">{{ link.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+                    {% endfor %}
+                    
+                    <!-- start footer column -->
+                    <div class="col-lg-3 col-sm-6 ps-30px sm-ps-15px md-mb-50px xs-mb-0 order-sm-2 order-lg-5 text-center text-sm-start">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">Connect with us</span>
+                        <div class="elements-social social-icon-style-09">
+                            <ul class="small-icon dark mb-20px">
+                                {% for social in social_links %}
+                                <li><a class="{{ social.name|lower }}" href="{{ social.url }}" target="_blank"><i class="{{ social.icon }}"></i><span></span></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">Secure payment</span>
+                        <div class="footer-card d-block d-sm-flex align-items-center">
+                            {% for payment in payment_methods %}
+                            <a href="{{ payment.url }}" class="d-inline-block me-5px align-middle"><img src="{{ payment.image }}" class="h-25px" alt="{{ payment.name }}"></a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- end footer column -->                        
+                </div>
+                <div class="row justify-content-center align-items-center">
+                    <!-- start divider -->
+                    <div class="col-12">
+                        <div class="divider-style-03 divider-style-03-01 border-color-transparent-dark-very-light"></div>
+                    </div>
+                    <!-- end divider -->
+                    <!-- start copyright -->
+                    <div class="col-md-6 pt-20px pb-20px sm-pt-0 fs-16 order-2 order-md-1 text-center text-md-start last-paragraph-no-margin">
+                        <p>&copy; {{ current_year|default('2024') }} {{ copyright_text|default('Crafto is Proudly Powered by <a href="https://www.themezaa.com/" target="_blank" class="text-decoration-line-bottom text-dark-gray">ThemeZaa</a>') }}</p>
+                    </div>
+                    <!-- end copyright -->
+                    <!-- start footer menu -->
+                    <div class="col-md-6 pt-20px pb-20px sm-pb-10px fs-16 order-1 order-md-2 text-center text-md-end">
+                        <ul class="footer-navbar xs-lh-normal"> 
+                            {% for policy in policy_links %}
+                            <li><a href="/{{ policy.url }}" class="nav-link">{{ policy.name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <!-- end footer menu -->
+                </div>
+            </div> 
+        </footer>
+        <!-- end footer -->
+        
+        <!-- start cookie message -->
+        {% if show_cookie_message %}
+        <div id="cookies-model" class="cookie-message bg-dark-gray border-radius-8px"> 
+            <div class="cookie-description fs-14 text-white mb-20px lh-22">{{ cookie_message|default('We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Allow cookies" you consent to our use of cookies.') }}</div>   
+            <div class="cookie-btn">
+                <a href="/cookie_policy" class="btn btn-transparent-white border-1 border-color-transparent-white-light btn-very-small btn-switch-text btn-rounded w-100 mb-15px" aria-label="btn">
+                    <span>
+                        <span class="btn-double-text" data-text="Cookie policy">Cookie policy</span> 
+                    </span>
+                </a> 
+                <a href="#" class="btn btn-white btn-very-small btn-switch-text btn-box-shadow accept_cookies_btn btn-rounded w-100" data-accept-btn aria-label="text">
+                    <span>
+                        <span class="btn-double-text" data-text="Allow cookies">Allow cookies</span> 
+                    </span>
+                </a>
+            </div> 
+        </div>
+        {% endif %}
+        <!-- end cookie message -->
+        
+        <!-- start subscription popup -->
+        {% if show_subscription_popup %}
+        <div id="subscribe-popup" class="mfp-hide subscribe-popup">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-10 col-md-10 bg-white">
+                        <div class="row position-relative box-shadow-quadruple-large">
+                            <div class="col-lg-6 cover-background md-h-400px xs-h-300px" style="background-image:url('{{ subscription_popup_image|default('https://placehold.co/600x660') }}');"></div>
+                            <div class="col-lg-6 newsletter-popup p-8 pt-10 pb-10 lg-p-5 md-p-6 xs-p-8 position-relative">
+                                <h4 class="d-inline-block alt-font ls-minus-1px fw-600 text-dark-gray mb-15px">{{ subscription_popup_title|default('Subscribe to the latest updates!') }}</h4>
+                                <p>{{ subscription_popup_description|default('Subscribe to our newsletters and get the latest business updates.') }}</p>
+                                <div class="d-inline-block w-100 newsletter-style-05 position-relative mb-20px">
+                                    <form action="/subscribe" method="post">
+                                        <input class="input-medium w-100 border-radius-4px form-control required mb-15px" type="email" name="email" placeholder="Enter your email address" />
+                                        <input type="hidden" name="redirect" value="">
+                                        <button type="submit" class="btn btn-medium btn-round-edge btn-dark-gray btn-box-shadow w-100 submit">Subscribe now!</button>
+                                        <div class="form-results border-radius-4px mt-10px lh-normal pt-10px pb-10px ps-15px pe-15px fs-16 w-100 text-center position-absolute z-index-1 d-none"></div>
+                                    </form>
+                                </div>
+                                <label for="newsletter-off" class="fs-15"><input class="w-auto me-10px position-relative top-1px p-0" type="checkbox" id="newsletter-off" name="newsletter-off">Don't show this popup again</label>
+                            </div>
+                            <button title="Close (Esc)" type="button" class="mfp-close text-dark-gray"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <!-- end subscription popup -->
+        
+        <!-- start scroll progress -->
+        <div class="scroll-progress d-none d-xxl-block">
+            <a href="#" class="scroll-top" aria-label="scroll">
+                <span class="scroll-text">Scroll</span><span class="scroll-line"><span class="scroll-point"></span></span>
+            </a>
+        </div>
+        <!-- end scroll progress -->
+        
+        <!-- javascript libraries -->
+        <script type="text/javascript" src="{{ static_url('js/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ static_url('js/vendors.min.js') }}"></script>
+        <!-- slider revolution core javaScript files -->
+        <script type="text/javascript" src="{{ static_url('revolution/js/jquery.themepunch.tools.min.js') }}"></script>
+        <script type="text/javascript" src="{{ static_url('revolution/js/jquery.themepunch.revolution.min.js') }}"></script>
+
+        <!-- Slider Revolution add on files -->
+        <script type='text/javascript' src='{{ static_url('revolution/revolution-addons/bubblemorph/js/revolution.addon.bubblemorph.min.js') }}'></script>
+        <!-- Slider's main "init" script -->
+        <script type="text/javascript">
+            var revapi263,
+                    tpj;
+            (function () {
+                if (!/loaded|interactive|complete/.test(document.readyState))
+                    document.addEventListener("DOMContentLoaded", onLoad);
+                else
+                    onLoad();
+                function onLoad() {
+                    if (tpj === undefined) {
+                        tpj = jQuery;
+                        if ("off" == "on")
+                            tpj.noConflict();
+                    }
+                    if (tpj("#jewellery-store-slider").revolution == undefined) {
+                        revslider_showDoubleJqueryError("#jewellery-store-slider");
+                    } else {
+                        revapi263 = tpj("#jewellery-store-slider").show().revolution({
+                            sliderType: "standard",
+                            /* sets the Slider's default timeline */
+                            delay: 9000,
+                            /* options are 'auto', 'fullwidth' or 'fullscreen' */
+                            sliderLayout: 'fullscreen',
+                            /* RESPECT ASPECT RATIO */
+                            autoHeight: 'off',
+                            /* options that disable autoplay */
+                            stopLoop: 'off',
+                            stopAfterLoops: -1,
+                            stopAtSlide: -1,
+                            navigation: {
+                                keyboardNavigation: "on",
+                                keyboard_direction: "horizontal",
+                                mouseScrollNavigation: "off",
+                                mouseScrollReverse: "default",
+                                onHoverStop: "off",
+                                touch: {
+                                    touchenabled: "on",
+                                    touchOnDesktop: "on",
+                                    swipe_threshold: 75,
+                                    swipe_min_touches: 1,
+                                    swipe_direction: "horizontal",
+                                    drag_block_vertical: true
+                                },
+                                arrows: {
+                                    enable: true,
+                                    style: 'uranus',
+                                    tmp: '',
+                                    rtl: false,
+                                    hide_onleave: false,
+                                    hide_onmobile: true,
+                                    hide_under: 767,
+                                    hide_over: 9999,
+                                    hide_delay: 200,
+                                    hide_delay_mobile: 1200,
+                                    left: {
+                                        h_align: "right",
+                                        v_align: "top",
+                                        h_offset: 0,
+                                        v_offset: 0,
+                                    },
+                                    right: {
+                                        h_align: "right",
+                                        v_align: "bottom",
+                                        h_offset: 0,
+                                        v_offset: 0,
+                                    }
+                                }
+                            },
+                            /* [DESKTOP, LAPTOP, TABLET, SMARTPHONE] */
+                            responsiveLevels: [1240, 1024, 768, 480],
+                            /* [DESKTOP, LAPTOP, TABLET, SMARTPHONE] */
+                            gridwidth: [1220, 1024, 768, 480],
+                            /* [DESKTOP, LAPTOP, TABLET, SMARTPHONE] */
+                            gridheight: [970, 970, 960, 720],
+                            /* [DESKTOP, LAPTOP, TABLET, SMARTPHONE] */
+                            visibilityLevels: [1240, 1024, 1024, 480],
+                            /* Lazy Load options are "all", "smart", "single" and "none" */
+                            lazyType: "smart",
+                            spinner: "spinner0",
+                            shadow: 0,
+                            shuffle: "off",
+                            fullScreenAutoWidth: "off",
+                            fullScreenAlignForce: "off",
+                            fullScreenOffsetContainer: "nav, .header-top-bar",
+                            fullScreenOffset: "-1",
+                            disableProgressBar: "on",
+                            hideThumbsOnMobile: "off",
+                            hideSliderAtLimit: 0,
+                            hideCaptionAtLimit: 0,
+                            hideAllCaptionAtLilmit: 0,
+                            debugMode: false,
+                            fallbacks: {
+                                simplifyAll: "off",
+                                nextSlideOnWindowFocus: "off",
+                                disableFocusListener: false,
+                            }
+                        });
+                    }
+                    ; /* END OF revapi call */
+                    BubbleMorphAddOn(jQuery, revapi263, false)
+                }
+                ;
+            }()); /* END OF WRAPPING FUNCTION */
+        </script>
+        <script type="text/javascript" src="{{ static_url('js/main.js') }}"></script>
+    </body>
+</html>
