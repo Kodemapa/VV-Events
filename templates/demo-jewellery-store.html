@@ -36,8 +36,8 @@
                 <div class="container-fluid">
                     <div class="row h-40px align-items-center m-0">
                         <div class="col-12 justify-content-center alt-font">
-                            <div class="fs-13 text-white text-uppercase">{{ promo_message|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>   
-                            <a href="/offers" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">Get offers</span></a>
+                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>
+                            <a href="{{ offer_link|default('#') }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text|default('Get offers') }}</span></a>
                         </div>
                     </div>
                 </div>
@@ -55,86 +55,173 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav"> 
                             <ul class="navbar-nav alt-font"> 
-                                {% for item in nav_items %}
-                                <li class="nav-item {{ 'dropdown submenu' if item.dropdown }}">
-                                    <a href="/{{ item.url }}" class="nav-link">{{ item.name }}</a>
-                                    {% if item.dropdown %}
-                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink{{ loop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
-                                        {% if item.mega_menu %}
+                                <li class="nav-item"><a href="{{ home_url|default('/') }}" class="nav-link">Home</a></li>
+                                <li class="nav-item dropdown submenu">
+                                    <a href="{{ shop_url|default('/shop') }}" class="nav-link">Shop</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink1"> 
                                         <div class="d-lg-flex mega-menu m-auto flex-column">
                                             <div class="row row-cols-1 row-cols-lg-5 mb-50px md-mb-20px">
-                                                {% for category in item.categories %}
                                                 <div class="col md-mb-5px">
                                                     <ul>  
-                                                        <li class="sub-title">{{ category.name }}</li>
-                                                        {% for subitem in category.subitems %}
-                                                        <li><a href="/shop/{{ category.name|lower }}/{{ subitem|lower }}">{{ subitem }}</a></li>
+                                                        <li class="sub-title">Rings</li>
+                                                        {% for ring in rings|default([
+                                                            {'name': 'Engagement', 'url': '#'},
+                                                            {'name': 'Gold rings', 'url': '#'},
+                                                            {'name': 'Casual rings', 'url': '#'},
+                                                            {'name': 'Silver rings', 'url': '#'},
+                                                            {'name': 'Platinum rings', 'url': '#'},
+                                                            {'name': 'Diamond rings', 'url': '#'}
+                                                        ]) %}
+                                                            <li><a href="{{ ring.url }}">{{ ring.name }}</a></li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
-                                                {% endfor %}
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">Earrings</li>
+                                                        {% for earring in earrings|default([
+                                                            {'name': 'Jhumkas', 'url': '#'},
+                                                            {'name': 'Barbells', 'url': '#'},
+                                                            {'name': 'Hug hoops', 'url': '#'},
+                                                            {'name': 'Tear drop', 'url': '#'},
+                                                            {'name': 'Suidhaga', 'url': '#'},
+                                                            {'name': 'Gemstone', 'url': '#'}
+                                                        ]) %}
+                                                            <li><a href="{{ earring.url }}">{{ earring.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">Necklaces</li>
+                                                        {% for necklace in necklaces|default([
+                                                            {'name': 'Bib necklece', 'url': '#'},
+                                                            {'name': 'Collar necklece', 'url': '#'},
+                                                            {'name': 'Rope necklece', 'url': '#'},
+                                                            {'name': 'Locket necklece', 'url': '#'},
+                                                            {'name': 'Chain necklece', 'url': '#'},
+                                                            {'name': 'Opera nacklece', 'url': '#'}
+                                                        ]) %}
+                                                            <li><a href="{{ necklace.url }}">{{ necklace.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">Pendants</li>
+                                                        {% for pendant in pendants|default([
+                                                            {'name': 'Alphabet', 'url': '#'},
+                                                            {'name': 'Mangalsutra', 'url': '#'},
+                                                            {'name': 'Religious', 'url': '#'},
+                                                            {'name': 'Diamond', 'url': '#'},
+                                                            {'name': 'Heart shaped', 'url': '#'},
+                                                            {'name': 'Gemstone', 'url': '#'}
+                                                        ]) %}
+                                                            <li><a href="{{ pendant.url }}">{{ pendant.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="col">
+                                                    <ul>  
+                                                        <li class="sub-title">Bracelets</li>
+                                                        {% for bracelet in bracelets|default([
+                                                            {'name': 'Caratlane chain', 'url': '#'},
+                                                            {'name': 'Oval bracelets', 'url': '#'},
+                                                            {'name': 'Pearl bracelets', 'url': '#'},
+                                                            {'name': 'Charm bracelets', 'url': '#'},
+                                                            {'name': 'Silver brcelets', 'url': '#'},
+                                                            {'name': 'Tennis bracelets', 'url': '#'}
+                                                        ]) %}
+                                                            <li><a href="{{ bracelet.url }}">{{ bracelet.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="row row-cols-1 row-cols-md-2">
-                                                {% for banner in item.banners %}
                                                 <div class="col">
-                                                    <a href="/{{ banner.url }}"><img src="{{ banner.image }}" class="border-radius-4px w-100" alt="{{ banner.alt }}"></a>
+                                                    <a href="{{ shop_url|default('/shop') }}"><img src="https://placehold.co/580x160" class="border-radius-4px w-100" alt=""></a>
                                                 </div>
-                                                {% endfor %}
+                                                <div class="col">
+                                                    <a href="{{ shop_url|default('/shop') }}"><img src="https://placehold.co/580x160" class="border-radius-4px w-100" alt=""></a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        {% elif item.categories_grid %}
+                                        </div> 
+                                    </div>
+                                </li> 
+                                <li class="nav-item dropdown submenu">
+                                    <a href="{{ categories_url|default('/categories') }}" class="nav-link">Categories</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink2"> 
                                         <div class="mega-menu m-auto">
                                             <div class="row md-m-0">
                                                 <div class="col-12 col-lg-9">
                                                     <div class="row row-cols-1 row-cols-lg-4 align-items-center justify-content-center">
-                                                        {% for category in item.grid_categories %}
-                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="/categories/{{ category.name|lower }}" class="d-none d-lg-block"> 
+                                                        {% for category in categories|default([
+                                                            {'name': 'Rings', 'url': '/categories/rings', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Bracelet', 'url': '/categories/bracelet', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Earrings', 'url': '/categories/earrings', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Necklace', 'url': '/categories/necklace', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Pendants', 'url': '/categories/pendants', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Watches', 'url': '/categories/watches', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Necklace', 'url': '/categories/necklace2', 'image': 'https://placehold.co/190x140'},
+                                                            {'name': 'Chain', 'url': '/categories/chain', 'image': 'https://placehold.co/190x140'}
+                                                        ]) %}
+                                                        <div class="col {% if not loop.last %}mb-20px md-mb-10px{% endif %} text-start text-lg-center">
+                                                            <a href="{{ category.url }}" class="d-none d-lg-block"> 
                                                                 <img src="{{ category.image }}" class="border-radius-4px mb-5px" alt="{{ category.name }}">  
                                                             </a>
-                                                            <a href="/categories/{{ category.name|lower }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                            <a href="{{ category.url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
                                                                 <span> 
                                                                     <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ category.name }}</span> 
                                                                     <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                                 </span>
-                                                            </a> 
+                                                            </a>
                                                         </div>
                                                         {% endfor %}
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-md-4 d-none d-lg-flex">
                                                     <div>
-                                                        <a href="/categories"><img src="{{ item.featured_image }}" class="border-radius-4px" alt="Featured Category"></a>
+                                                        <a href="{{ categories_url|default('/categories') }}"><img src="https://placehold.co/290x380" class="border-radius-4px" alt=""></a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {% else %}
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
-                                            {% for subitem in item.subitems %}
-                                            <li><a href="/{{ subitem.url }}">{{ subitem.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
+                                        </div> 
                                     </div>
-                                    {% endif %}
+                                </li> 
+                                <li class="nav-item dropdown simple-dropdown">
+                                    <a href="javascript:void(0);" class="nav-link">Pages</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3"> 
+                                        <li><a href="{{ about_url|default('/about') }}">About</a></li>
+                                        <li><a href="{{ faq_url|default('/faq') }}">Faq</a></li>
+                                        <li><a href="{{ wishlist_url|default('/wishlist') }}">Wishlist</a></li>
+                                        <li><a href="{{ account_url|default('/account') }}">Account</a></li>
+                                        <li><a href="{{ cart_url|default('/cart') }}">Cart</a></li>
+                                        <li><a href="{{ checkout_url|default('/checkout') }}">Checkout</a></li>
+                                    </ul>
                                 </li>
-                                {% endfor %}
+                                <li class="nav-item"><a href="{{ blog_url|default('/blog') }}" class="nav-link">Blog</a></li>
+                                <li class="nav-item"><a href="{{ contact_url|default('/contact') }}" class="nav-link">Contact</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-2 justify-content-end justify-content-lg-center">
-                        <a class="navbar-brand" href="/">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="default-logo">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="alt-logo">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="mobile-logo"> 
+                        <a class="navbar-brand" href="{{ home_url|default('/') }}">
+                            {% if logo_url %}
+                                <img src="{{ logo_url }}" data-at2x="{{ logo_2x_url|default(logo_url) }}" alt="Jewelry Store" class="default-logo">
+                                <img src="{{ logo_url }}" data-at2x="{{ logo_2x_url|default(logo_url) }}" alt="Jewelry Store" class="alt-logo">
+                                <img src="{{ logo_url }}" data-at2x="{{ logo_2x_url|default(logo_url) }}" alt="Jewelry Store" class="mobile-logo">
+                            {% else %}
+                                <span class="alt-font text-extra-dark-gray fw-600 fs-22">Luxury</span>
+                            {% endif %}
                         </a>
                     </div>
                     <div class="col-auto col-lg-5 justify-content-end ms-auto md-pe-0">
                         <div class="header-icon">
                             <div class="widget-text icon alt-font fw-500 d-none d-sm-flex">
-                                <a href="/wishlist">Wishlist</a>
+                                <a href="{{ wishlist_url|default('/wishlist') }}">Wishlist</a>
                             </div>
                             <div class="header-account-icon icon alt-font">
                                 <div class="header-account dropdown"> 
@@ -143,8 +230,14 @@
                                         <span class="d-none d-sm-inline-block">My account</span>
                                     </a>
                                     <ul class="account-item-list">
-                                        {% for account_item in account_items %}
-                                        <li class="account-item"><a href="/{{ account_item.url }}">{{ account_item.name }}</a></li>
+                                        {% for item in account_items|default([
+                                            {'name': 'Wishlist', 'url': '/wishlist'},
+                                            {'name': 'Order history', 'url': '/order-history'},
+                                            {'name': 'Account details', 'url': '/account'},
+                                            {'name': 'Customer support', 'url': '/support'},
+                                            {'name': 'Logout', 'url': '/logout'}
+                                        ]) %}
+                                            <li class="account-item"><a href="{{ item.url }}">{{ item.name }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div> 
@@ -153,7 +246,7 @@
                                 <a href="javascript:void(0)" class="search-form-icon header-search-form xs-ps-10px"><i class="feather icon-feather-search"></i></a> 
                                 <div class="search-form-wrapper">
                                     <button title="Close" type="button" class="search-close alt-font">×</button>
-                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="/search">
+                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="{{ search_result_url|default('/search') }}">
                                         <div class="search-form-box">
                                             <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">What are you looking for?</h2>
                                             <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="Enter your keywords..." name="s" value="" type="text" autocomplete="off">
@@ -166,24 +259,24 @@
                             </div>
                             <div class="header-cart-icon icon">
                                 <div class="header-cart dropdown">
-                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_items|length }}</span></a> 
+                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_count|default('0') }}</span></a> 
                                     <ul class="cart-item-list">
-                                        {% for item in cart_items %}
+                                        {% for item in cart_items|default([]) %}
                                         <li class="cart-item align-items-center">
                                             <a href="javascript:void(0);" class="alt-font close">×</a>
                                             <div class="product-image">
-                                                <a href="/product/{{ item.id }}"><img src="{{ item.image }}" class="cart-thumb" alt="{{ item.name }}"></a>
+                                                <a href="{{ item.url }}"><img src="{{ item.image }}" class="cart-thumb" alt=""></a>
                                             </div>
                                             <div class="product-detail alt-font">
-                                                <a href="/product/{{ item.id }}">{{ item.name }}</a>
-                                                <span class="item-ammount">${{ "%.2f"|format(item.price) }}</span> 
+                                                <a href="{{ item.url }}">{{ item.name }}</a>
+                                                <span class="item-ammount">{{ item.price }}</span> 
                                             </div>
                                         </li>
                                         {% endfor %}
                                         <li class="cart-total">
-                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">${{ "%.2f"|format(cart_total) }}</span></div>
-                                            <a href="/cart" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
-                                            <a href="/checkout" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
+                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal|default('$0.00') }}</span></div>
+                                            <a href="{{ cart_url|default('/cart') }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
+                                            <a href="{{ checkout_url|default('/checkout') }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -1,12 +1,12 @@
 ﻿<!doctype html>
 <html class="no-js" lang="en">
     <head>
-        <title>{{ site_title|default('Crafto - The Multipurpose HTML5 Template') }}</title>
+        <title>{{ site_title }} - {{ page_title|default('My Account') }}</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="author" content="{{ author|default('ThemeZaa') }}">
+        <meta name="author" content="ThemeZaa">
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <meta name="description" content="{{ site_description|default('Elegant jewelry store with a wide collection of rings, earrings, necklaces, and bracelets.') }}">
+        <meta name="description" content="{{ meta_description }}">
         <!-- favicon icon -->
         <link rel="shortcut icon" href="{{ static_url('images/favicon.png') }}">
         <link rel="apple-touch-icon" href="{{ static_url('images/apple-touch-icon-57x57.png') }}">
@@ -30,7 +30,7 @@
                 <div class="container-fluid">
                     <div class="row h-40px align-items-center m-0">
                         <div class="col-12 justify-content-center alt-font">
-                            <div class="fs-13 text-white text-uppercase">{{ promo_message|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>
+                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>
                             <a href="{{ offer_link|default('#') }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text|default('Get offers') }}</span></a>
                         </div>
                     </div>
@@ -50,12 +50,11 @@
                         <div class="collapse navbar-collapse" id="navbarNav"> 
                             <ul class="navbar-nav alt-font"> 
                                 {% for item in nav_items %}
-                                <li class="nav-item {{ 'dropdown submenu' if item.dropdown }}">
-                                    <a href="/{{ item.url }}" class="nav-link">{{ item.name }}</a>
-                                    {% if item.dropdown %}
+                                {% if item.dropdown and item.mega_menu %}
+                                <li class="nav-item dropdown submenu">
+                                    <a href="{{ url_for(item.url) if item.url else '#' }}" class="nav-link">{{ item.name }}</a>
                                     <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink{{ loop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
-                                        {% if item.mega_menu %}
                                         <div class="d-lg-flex mega-menu m-auto flex-column">
                                             <div class="row row-cols-1 row-cols-lg-5 mb-50px md-mb-20px">
                                                 {% for category in item.categories %}
@@ -63,7 +62,7 @@
                                                     <ul>  
                                                         <li class="sub-title">{{ category.name }}</li>
                                                         {% for subitem in category.subitems %}
-                                                        <li><a href="/shop/{{ category.name|lower }}/{{ subitem|lower }}">{{ subitem }}</a></li>
+                                                        <li><a href="#">{{ subitem }}</a></li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
@@ -72,22 +71,28 @@
                                             <div class="row row-cols-1 row-cols-md-2">
                                                 {% for banner in item.banners %}
                                                 <div class="col">
-                                                    <a href="/{{ banner.url }}"><img src="{{ banner.image }}" class="border-radius-4px w-100" alt="{{ banner.alt }}"></a>
+                                                    <a href="{{ url_for(banner.url) if banner.url else '#' }}"><img src="{{ banner.image }}" class="border-radius-4px w-100" alt="{{ banner.alt }}"></a>
                                                 </div>
                                                 {% endfor %}
                                             </div>
-                                        </div>
-                                        {% elif item.categories_grid %}
+                                        </div> 
+                                    </div>
+                                </li>
+                                {% elif item.dropdown and item.categories_grid %}
+                                <li class="nav-item dropdown submenu">
+                                    <a href="{{ url_for(item.url) if item.url else '#' }}" class="nav-link">{{ item.name }}</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink{{ loop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
                                         <div class="mega-menu m-auto">
                                             <div class="row md-m-0">
                                                 <div class="col-12 col-lg-9">
                                                     <div class="row row-cols-1 row-cols-lg-4 align-items-center justify-content-center">
                                                         {% for category in item.grid_categories %}
-                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="/categories/{{ category.name|lower }}" class="d-none d-lg-block"> 
-                                                                <img src="{{ category.image }}" class="border-radius-4px mb-5px" alt="{{ category.name }}">  
+                                                        <div class="col {% if not loop.last %}mb-20px md-mb-10px{% endif %} text-start text-lg-center">
+                                                            <a href="{{ url_for(item.url) if item.url else '#' }}" class="d-none d-lg-block"> 
+                                                                <img src="{{ category.image }}" class="border-radius-4px mb-5px" alt="">  
                                                             </a>
-                                                            <a href="/categories/{{ category.name|lower }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                            <a href="{{ url_for(item.url) if item.url else '#' }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
                                                                 <span> 
                                                                     <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ category.name }}</span> 
                                                                     <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
@@ -99,36 +104,41 @@
                                                 </div>
                                                 <div class="col-lg-3 col-md-4 d-none d-lg-flex">
                                                     <div>
-                                                        <a href="/categories"><img src="{{ item.featured_image }}" class="border-radius-4px" alt="Featured Category"></a>
+                                                        <a href="{{ url_for(item.url) if item.url else '#' }}"><img src="{{ item.featured_image }}" class="border-radius-4px" alt=""></a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {% else %}
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
-                                            {% for subitem in item.subitems %}
-                                            <li><a href="/{{ subitem.url }}">{{ subitem.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
+                                        </div> 
                                     </div>
-                                    {% endif %}
                                 </li>
+                                {% elif item.dropdown and item.pages %}
+                                <li class="nav-item dropdown simple-dropdown">
+                                    <a href="javascript:void(0);" class="nav-link">{{ item.name }}</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink{{ loop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
+                                        {% for page in item.pages %}
+                                        <li><a href="{{ url_for(page.url) if page.url else '#' }}">{{ page.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                                {% else %}
+                                <li class="nav-item"><a href="{{ url_for(item.url) if item.url else '#' }}" class="nav-link">{{ item.name }}</a></li>
+                                {% endif %}
                                 {% endfor %}
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-2 justify-content-end justify-content-lg-center">
-                        <a class="navbar-brand" href="/">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="default-logo">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="alt-logo">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="mobile-logo"> 
+                        <a class="navbar-brand" href="{{ url_for('index') }}">
+                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="" class="default-logo">
+                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="" class="alt-logo">
+                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="" class="mobile-logo"> 
                         </a>
                     </div>
                     <div class="col-auto col-lg-5 justify-content-end ms-auto md-pe-0">
                         <div class="header-icon">
                             <div class="widget-text icon alt-font fw-500 d-none d-sm-flex">
-                                <a href="/wishlist">Wishlist</a>
+                                <a href="{{ url_for('wishlist') }}">Wishlist</a>
                             </div>
                             <div class="header-account-icon icon alt-font">
                                 <div class="header-account dropdown"> 
@@ -137,8 +147,8 @@
                                         <span class="d-none d-sm-inline-block">My account</span>
                                     </a>
                                     <ul class="account-item-list">
-                                        {% for account_item in account_items %}
-                                        <li class="account-item"><a href="/{{ account_item.url }}">{{ account_item.name }}</a></li>
+                                        {% for item in account_items %}
+                                        <li class="account-item"><a href="{{ url_for(item.url) if item.url else '#' }}">{{ item.name }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div> 
@@ -147,7 +157,7 @@
                                 <a href="javascript:void(0)" class="search-form-icon header-search-form xs-ps-10px"><i class="feather icon-feather-search"></i></a> 
                                 <div class="search-form-wrapper">
                                     <button title="Close" type="button" class="search-close alt-font">×</button>
-                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="/search">
+                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="{{ url_for('search') }}">
                                         <div class="search-form-box">
                                             <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">What are you looking for?</h2>
                                             <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="Enter your keywords..." name="s" value="" type="text" autocomplete="off">
@@ -166,18 +176,18 @@
                                         <li class="cart-item align-items-center">
                                             <a href="javascript:void(0);" class="alt-font close">×</a>
                                             <div class="product-image">
-                                                <a href="/product/{{ item.id }}"><img src="{{ item.image }}" class="cart-thumb" alt="{{ item.name }}"></a>
+                                                <a href="{{ url_for('product', product_id=item.id) }}"><img src="{{ item.image }}" class="cart-thumb" alt=""></a>
                                             </div>
                                             <div class="product-detail alt-font">
-                                                <a href="/product/{{ item.id }}">{{ item.name }}</a>
+                                                <a href="{{ url_for('product', product_id=item.id) }}">{{ item.name }}</a>
                                                 <span class="item-ammount">${{ "%.2f"|format(item.price) }}</span> 
                                             </div>
                                         </li>
                                         {% endfor %}
                                         <li class="cart-total">
-                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">${{ "%.2f"|format(cart_total) }}</span></div>
-                                            <a href="/cart" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
-                                            <a href="/checkout" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
+                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal }}</span></div>
+                                            <a href="{{ url_for('cart') }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
+                                            <a href="{{ url_for('checkout') }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -189,18 +199,18 @@
         </header>
         <!-- end header -->
         <!-- start page title -->
-        <section class="half-section top-space-margin cover-background" style="background-image: url({{ account_page_title_bg|default('https://placehold.co/1920x470') }})">
+        <section class="half-section top-space-margin cover-background" style="background-image: url({{ page_title_image_url|default('https://placehold.co/1920x470') }})">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-8 text-center position-relative page-title-extra-large">
                         <div class="d-flex flex-column extra-very-small-screen">
                             <div class="mt-auto">
-                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ account_page_title|default('My account') }}</h1>
+                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ page_heading|default('My account') }}</h1>
                             </div>
                             <div class="fs-16 fw-500 alt-font text-dark-gray justify-content-center breadcrumb breadcrumb-style-01 mt-auto">
                                 <ul>
-                                    <li><a href="/" class="text-dark-gray text-medium-gray-hover">{{ home_label|default('Home') }}</a></li>
-                                    <li>{{ account_page_title|default('My account') }}</li>
+                                    <li><a href="{{ url_for('index') }}" class="text-dark-gray text-medium-gray-hover">{{ home_label|default('Home') }}</a></li>
+                                    <li>{{ page_name|default('My account') }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -214,35 +224,35 @@
             <div class="container">
                 <div class="row g-0 justify-content-center">
                     <div class="col-xl-4 col-lg-5 col-md-10 contact-form-style-04 md-mb-50px" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":100, "staggervalue": 150, "easing": "easeOutQuad" }'>
-                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ login_title|default('Member login') }}</span>
-                        <form action="{{ login_form_action|default('email-templates/contact-form.php') }}" method="post">
-                            <label class="text-dark-gray mb-10px fw-500">{{ username_label|default('Username or email address') }}<span class="text-red">*</span></label> 
-                            <input class="mb-20px bg-very-light-gray form-control required" type="email" name="name" placeholder="{{ username_placeholder|default('Enter your username') }}" />
-                            <label class="text-dark-gray mb-10px fw-500">{{ password_label|default('Password') }}<span class="text-red">*</span></label> 
-                            <input class="mb-20px bg-very-light-gray form-control required" type="password" name="password" placeholder="{{ password_placeholder|default('Enter your password') }}" />
+                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ login_heading|default('Member login') }}</span>
+                        <form action="{{ login_form_action|default(url_for('login')) }}" method="post">
+                            <label class="text-dark-gray mb-10px fw-500">{{ login_username_label|default('Username or email address') }}<span class="text-red">*</span></label> 
+                            <input class="mb-20px bg-very-light-gray form-control required" type="email" name="email" placeholder="{{ login_username_placeholder|default('Enter your username') }}" />
+                            <label class="text-dark-gray mb-10px fw-500">{{ login_password_label|default('Password') }}<span class="text-red">*</span></label> 
+                            <input class="mb-20px bg-very-light-gray form-control required" type="password" name="password" placeholder="{{ login_password_placeholder|default('Enter your password') }}" />
                             <div class="position-relative terms-condition-box text-start d-flex align-items-center mb-20px">
                                 <label>
-                                    <input type="checkbox" name="terms_condition" id="terms_condition" value="1" class="terms-condition check-box align-middle required">
+                                    <input type="checkbox" name="remember_me" id="remember_me" value="1" class="terms-condition check-box align-middle required">
                                     <span class="box fs-14">{{ remember_me_label|default('Remember me') }}</span>
                                 </label>
                                 <a href="{{ forgot_password_url|default('#') }}" class="fs-14 text-dark-gray fw-500 text-decoration-line-bottom ms-auto">{{ forgot_password_label|default('Forget your password?') }}</a>
                             </div>
-                            <input type="hidden" name="redirect" value="">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button class="btn btn-medium btn-round-edge btn-dark-gray btn-box-shadow submit w-100" type="submit">{{ login_button_text|default('Login') }}</button> 
                             <div class="form-results mt-20px d-none"></div>
                         </form>
                     </div>
                     <div class="col-lg-6 col-md-10 offset-xl-2 offset-lg-1 p-6 box-shadow-extra-large border-radius-6px" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'>
-                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ register_title|default('Create an account') }}</span>
-                        <form action="{{ register_form_action|default('email-templates/contact-form.php') }}" method="post">
+                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ register_heading|default('Create an account') }}</span>
+                        <form action="{{ register_form_action|default(url_for('register')) }}" method="post">
                             <label class="text-dark-gray mb-10px fw-500">{{ register_username_label|default('Username') }}<span class="text-red">*</span></label> 
-                            <input class="mb-20px bg-very-light-gray form-control required" type="text" name="name" placeholder="{{ register_username_placeholder|default('Enter your username') }}" />
+                            <input class="mb-20px bg-very-light-gray form-control required" type="text" name="username" placeholder="{{ register_username_placeholder|default('Enter your username') }}" />
                             <label class="text-dark-gray mb-10px fw-500">{{ register_email_label|default('Email address') }}<span class="text-red">*</span></label> 
                             <input class="mb-20px bg-very-light-gray form-control required" type="email" name="email" placeholder="{{ register_email_placeholder|default('Enter your email') }}" />
                             <label class="text-dark-gray mb-10px fw-500">{{ register_password_label|default('Password') }}<span class="text-red">*</span></label> 
                             <input class="mb-20px bg-very-light-gray form-control required" type="password" name="password" placeholder="{{ register_password_placeholder|default('Enter your password') }}" /> 
-                            <span class="fs-13 lh-22 w-90 lg-w-100 md-w-90 sm-w-100 d-block mb-30px">{{ privacy_notice|default('Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our') }} <a href="{{ privacy_policy_url|default('#') }}" class="text-dark-gray text-decoration-line-bottom fw-500">{{ privacy_policy_label|default('privacy policy') }}.</a></span>
-                            <input type="hidden" name="redirect" value="">
+                            <span class="fs-13 lh-22 w-90 lg-w-100 md-w-90 sm-w-100 d-block mb-30px">{{ privacy_policy_text|default('Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our') }} <a href="{{ privacy_policy_url|default('#') }}" class="text-dark-gray text-decoration-line-bottom fw-500">{{ privacy_policy_link_text|default('privacy policy.') }}</a></span>
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <button class="btn btn-medium btn-round-edge btn-dark-gray btn-box-shadow submit w-100" type="submit">{{ register_button_text|default('Register') }}</button>
                             <div class="form-results mt-20px d-none"></div>
                         </form>
@@ -255,10 +265,10 @@
         <section class="p-0 position-relative">
             <div class="container-fluid p-0">
                 <div class="row row-cols-3 row-cols-md-6 instagram-follow-api position-relative g-0">
-                    {% for insta in instagram_images %}
+                    {% for image in instagram_images %}
                     <div class="col instafeed-grid">
-                        <figure class="border-radius-0px"><a href="{{ insta.url|default('https://www.instagram.com') }}" target="_blank"><img src="{{ insta.image }}" class="insta-image" alt=""><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
-                    </div>  
+                        <figure class="border-radius-0px"><a href="{{ image.url }}" target="_blank"><img src="{{ image.image }}" class="insta-image" alt=""><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
+                    </div>
                     {% endfor %}
                     <a href="{{ instagram_profile_url|default('https://www.instagram.com') }}" target="_blank" class="instagram-button alt-font absolute-middle-center bg-white w-120px h-120px md-w-90px md-h-90px text-dark-gray border-radius-100px box-shadow-extra-large d-flex align-items-center justify-content-center"><i class="feather icon-feather-instagram icon-medium"></i></a>
                 </div> 
@@ -271,40 +281,38 @@
                 <div class="row justify-content-center mb-4 sm-mb-35px">
                     <!-- start footer column -->
                     <div class="col-6 col-lg-3 last-paragraph-no-margin order-sm-1 md-mb-50px xs-mb-30px">
-                        <a href="/" class="footer-logo d-inline-block mb-20px"><img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}"></a>
-                        <span class="lh-22 alt-font fw-500 text-dark-gray d-block w-80 lg-w-100 mb-15px">{{ footer_description|default('Please reach out to when you need support.') }}</span>
-                        <div class="fs-16 text-brown"><i class="feather icon-feather-phone-call icon-small me-10px xs-me-5px text-dark-gray"></i><a href="tel:{{ contact_phone|default('11234567890') }}">+{{ contact_phone|default('1 1234567890') }}</a></div>
-                        <div class="fs-16"><i class="feather icon-feather-mail icon-small me-10px xs-me-5px text-dark-gray"></i><a href="mailto:{{ contact_email|default('info@domain.com') }}">{{ contact_email|default('info@domain.com') }}</a></div>
+                        <a href="{{ url_for('index') }}" class="footer-logo d-inline-block mb-20px"><img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt=""></a>
+                        <span class="lh-22 alt-font fw-500 text-dark-gray d-block w-80 lg-w-100 mb-15px">{{ footer_support_text|default('Please reach out to when you need support.') }}</span>
+                        <div class="fs-16 text-brown"><i class="feather icon-feather-phone-call icon-small me-10px xs-me-5px text-dark-gray"></i><a href="tel:{{ footer_phone|default('11234567890') }}">{{ footer_phone_display|default('+1 1234567890') }}</a></div>
+                        <div class="fs-16"><i class="feather icon-feather-mail icon-small me-10px xs-me-5px text-dark-gray"></i><a href="mailto:{{ footer_email|default('info@domain.com') }}">{{ footer_email|default('info@domain.com') }}</a></div>
                     </div>
                     <!-- end footer column -->
-                    
-                    {% for footer_col in footer_columns %}
                     <!-- start footer column -->
+                    {% for column in footer_columns %}
                     <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
-                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ footer_col.title }}</span>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ column.title }}</span>
                         <ul class="fs-16">
-                            {% for link in footer_col.links %}
-                            <li><a href="/{{ link.url }}">{{ link.name }}</a></li>
+                            {% for link in column.links %}
+                            <li><a href="{{ url_for(link.url) if link.url else '#' }}">{{ link.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
-                    <!-- end footer column -->
                     {% endfor %}
-                    
+                    <!-- end footer column -->
                     <!-- start footer column -->
                     <div class="col-lg-3 col-sm-6 ps-30px sm-ps-15px md-mb-50px xs-mb-0 order-sm-2 order-lg-5 text-center text-sm-start">
-                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">Connect with us</span>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">{{ social_heading|default('Connect with us') }}</span>
                         <div class="elements-social social-icon-style-09">
                             <ul class="small-icon dark mb-20px">
-                                {% for social in social_links %}
-                                <li><a class="{{ social.name|lower }}" href="{{ social.url }}" target="_blank"><i class="{{ social.icon }}"></i><span></span></a></li>
+                                {% for link in social_links %}
+                                <li><a class="{{ link.name|lower }}" href="{{ link.url }}" target="_blank"><i class="{{ link.icon }}"></i><span></span></a></li>
                                 {% endfor %}
                             </ul>
                         </div>
-                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">Secure payment</span>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">{{ payment_heading|default('Secure payment') }}</span>
                         <div class="footer-card d-block d-sm-flex align-items-center">
-                            {% for payment in payment_methods %}
-                            <a href="{{ payment.url }}" class="d-inline-block me-5px align-middle"><img src="{{ payment.image }}" class="h-25px" alt="{{ payment.name }}"></a>
+                            {% for method in payment_methods %}
+                            <a href="{{ method.url }}" class="d-inline-block me-5px align-middle"><img src="{{ method.image }}" class="h-25px" alt="{{ method.name }}"></a>
                             {% endfor %}
                         </div>
                     </div>
@@ -318,14 +326,14 @@
                     <!-- end divider -->
                     <!-- start copyright -->
                     <div class="col-md-6 pt-20px pb-20px sm-pt-0 fs-16 order-2 order-md-1 text-center text-md-start last-paragraph-no-margin">
-                        <p>&copy; {{ current_year|default('2024') }} {{ copyright_text|default('Crafto is Proudly Powered by <a href="https://www.themezaa.com/" target="_blank" class="text-decoration-line-bottom text-dark-gray">ThemeZaa</a>') }}</p>
+                        <p>&copy; {{ current_year }} {{ copyright_text|default('Crafto is Proudly Powered by') }} <a href="{{ copyright_link|default('https://www.themezaa.com/') }}" target="_blank" class="text-decoration-line-bottom text-dark-gray">{{ copyright_link_text|default('ThemeZaa') }}</a></p>
                     </div>
                     <!-- end copyright -->
                     <!-- start footer menu -->
                     <div class="col-md-6 pt-20px pb-20px sm-pb-10px fs-16 order-1 order-md-2 text-center text-md-end">
                         <ul class="footer-navbar xs-lh-normal"> 
-                            {% for policy in policy_links %}
-                            <li><a href="/{{ policy.url }}" class="nav-link">{{ policy.name }}</a></li>
+                            {% for link in policy_links %}
+                            <li><a href="{{ url_for(link.url) if link.url else '#' }}" class="nav-link">{{ link.name }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -339,14 +347,14 @@
         <div id="cookies-model" class="cookie-message bg-dark-gray border-radius-8px"> 
             <div class="cookie-description fs-14 text-white mb-20px lh-22">{{ cookie_message|default('We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Allow cookies" you consent to our use of cookies.') }}</div>   
             <div class="cookie-btn">
-                <a href="/cookie_policy" class="btn btn-transparent-white border-1 border-color-transparent-white-light btn-very-small btn-switch-text btn-rounded w-100 mb-15px" aria-label="btn">
+                <a href="{{ cookie_policy_url|default('#') }}" class="btn btn-transparent-white border-1 border-color-transparent-white-light btn-very-small btn-switch-text btn-rounded w-100 mb-15px" aria-label="btn">
                     <span>
-                        <span class="btn-double-text" data-text="Cookie policy">Cookie policy</span> 
+                        <span class="btn-double-text" data-text="{{ cookie_policy_text|default('Cookie policy') }}">{{ cookie_policy_text|default('Cookie policy') }}</span> 
                     </span>
                 </a> 
                 <a href="#" class="btn btn-white btn-very-small btn-switch-text btn-box-shadow accept_cookies_btn btn-rounded w-100" data-accept-btn aria-label="text">
                     <span>
-                        <span class="btn-double-text" data-text="Allow cookies">Allow cookies</span> 
+                        <span class="btn-double-text" data-text="{{ allow_cookies_text|default('Allow cookies') }}">{{ allow_cookies_text|default('Allow cookies') }}</span> 
                     </span>
                 </a>
             </div> 
