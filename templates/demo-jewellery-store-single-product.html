@@ -1,26 +1,26 @@
 ﻿<!doctype html>
 <html class="no-js" lang="en">
     <head>
-        <title>{{ page_title }}</title>
+        <title>{{ page_title|default('Product Detail - Jewelry Store') }}</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="author" content="ThemeZaa">
+        <meta name="author" content="{{ author_name|default('Jewelry Store') }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <meta name="description" content="{{ meta_description }}">
+        <meta name="description" content="{{ meta_description|default('View our exquisite jewelry product details.') }}">
         <!-- favicon icon -->
-        <link rel="shortcut icon" href="{{ favicon_url }}">
-        <link rel="apple-touch-icon" href="{{ apple_icon_url }}">
-        <link rel="apple-touch-icon" sizes="72x72" href="{{ apple_icon_72x72_url }}">
-        <link rel="apple-touch-icon" sizes="114x114" href="{{ apple_icon_114x114_url }}">
+        <link rel="shortcut icon" href="{{ favicon_url|default('/static/images/favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ apple_icon_url|default('/static/images/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ apple_icon_72x72_url|default('/static/images/apple-touch-icon-72x72.png') }}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ apple_icon_114x114_url|default('/static/images/apple-touch-icon-114x114.png') }}">
         <!-- google fonts preconnect -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <!-- style sheets and font icons -->
-        <link rel="stylesheet" href="{{ css_vendors_url }}"/>
-        <link rel="stylesheet" href="{{ css_icon_url }}"/>
-        <link rel="stylesheet" href="{{ css_style_url }}"/>
-        <link rel="stylesheet" href="{{ css_responsive_url }}"/>
-        <link rel="stylesheet" href="{{ jewellery_store_css_url }}" />
+        <link rel="stylesheet" href="{{ css_vendors_url|default('/static/css/vendors.min.css') }}"/>
+        <link rel="stylesheet" href="{{ css_icon_url|default('/static/css/icon.min.css') }}"/>
+        <link rel="stylesheet" href="{{ css_style_url|default('/static/css/style.css') }}"/>
+        <link rel="stylesheet" href="{{ css_responsive_url|default('/static/css/responsive.css') }}"/>
+        <link rel="stylesheet" href="{{ jewellery_store_css_url|default('/static/demos/jewellery-store/jewellery-store.css') }}" />
     </head>
     <body data-mobile-nav-style="classic">
         <!-- start header -->
@@ -30,8 +30,8 @@
                 <div class="container-fluid">
                     <div class="row h-40px align-items-center m-0">
                         <div class="col-12 justify-content-center alt-font">
-                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer }}</div>
-                            <a href="{{ offer_link }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text }}</span></a>
+                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer|default('Free shipping on all orders over $100') }}</div>
+                            <a href="{{ offer_link|default('/shop') }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text|default('Shop Now') }}</span></a>
                         </div>
                     </div>
                 </div>
@@ -49,9 +49,9 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav"> 
                             <ul class="navbar-nav alt-font"> 
-                                <li class="nav-item"><a href="{{ home_url }}" class="nav-link">Home</a></li>
+                                <li class="nav-item"><a href="{{ home_url|default('/') }}" class="nav-link">Home</a></li>
                                 <li class="nav-item dropdown submenu">
-                                    <a href="{{ shop_url }}" class="nav-link">Shop</a>
+                                    <a href="{{ shop_url|default('/shop') }}" class="nav-link">Shop</a>
                                     <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink1"> 
                                         <div class="d-lg-flex mega-menu m-auto flex-column">
@@ -59,138 +59,198 @@
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Rings</li>
-                                                        <li><a href="#">Engagement</a></li>
-                                                        <li><a href="#">Gold rings</a></li>
-                                                        <li><a href="#">Casual rings</a></li>
-                                                        <li><a href="#">Silver rings</a></li>
-                                                        <li><a href="#">Platinum rings</a></li>
-                                                        <li><a href="#">Diamond rings</a></li> 
+                                                        {% if rings %}
+                                                            {% for ring in rings %}
+                                                                <li><a href="{{ ring.url }}">{{ ring.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Engagement</a></li>
+                                                            <li><a href="#">Gold rings</a></li>
+                                                            <li><a href="#">Casual rings</a></li>
+                                                            <li><a href="#">Silver rings</a></li>
+                                                            <li><a href="#">Platinum rings</a></li>
+                                                            <li><a href="#">Diamond rings</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Earrings</li>
-                                                        <li><a href="#">Jhumkas</a></li>
-                                                        <li><a href="#">Barbells</a></li>
-                                                        <li><a href="#">Hug hoops</a></li>
-                                                        <li><a href="#">Tear drop</a></li>
-                                                        <li><a href="#">Suidhaga</a></li>
-                                                        <li><a href="#">Gemstone</a></li> 
+                                                        {% if earrings %}
+                                                            {% for earring in earrings %}
+                                                                <li><a href="{{ earring.url }}">{{ earring.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Jhumkas</a></li>
+                                                            <li><a href="#">Barbells</a></li>
+                                                            <li><a href="#">Hug hoops</a></li>
+                                                            <li><a href="#">Tear drop</a></li>
+                                                            <li><a href="#">Suidhaga</a></li>
+                                                            <li><a href="#">Gemstone</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Necklaces</li>
-                                                        <li><a href="#">Bib necklece</a></li>
-                                                        <li><a href="#">Collar necklece</a></li>
-                                                        <li><a href="#">Rope necklece</a></li>
-                                                        <li><a href="#">Locket necklece</a></li>
-                                                        <li><a href="#">Chain necklece</a></li>
-                                                        <li><a href="#">Opera nacklece</a></li> 
+                                                        {% if necklaces %}
+                                                            {% for necklace in necklaces %}
+                                                                <li><a href="{{ necklace.url }}">{{ necklace.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Bib necklece</a></li>
+                                                            <li><a href="#">Collar necklece</a></li>
+                                                            <li><a href="#">Rope necklece</a></li>
+                                                            <li><a href="#">Locket necklece</a></li>
+                                                            <li><a href="#">Chain necklece</a></li>
+                                                            <li><a href="#">Opera nacklece</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Pendants</li>
-                                                        <li><a href="#">Alphabet</a></li>
-                                                        <li><a href="#">Mangalsutra</a></li>
-                                                        <li><a href="#">Religious</a></li>
-                                                        <li><a href="#">Diamond</a></li>
-                                                        <li><a href="#">Heart shaped</a></li>
-                                                        <li><a href="#">Gemstone</a></li> 
+                                                        {% if pendants %}
+                                                            {% for pendant in pendants %}
+                                                                <li><a href="{{ pendant.url }}">{{ pendant.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Alphabet</a></li>
+                                                            <li><a href="#">Mangalsutra</a></li>
+                                                            <li><a href="#">Religious</a></li>
+                                                            <li><a href="#">Diamond</a></li>
+                                                            <li><a href="#">Heart shaped</a></li>
+                                                            <li><a href="#">Gemstone</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col">
                                                     <ul>  
                                                         <li class="sub-title">Bracelet</li>
-                                                        <li><a href="#">Caratlane chain</a></li>
-                                                        <li><a href="#">Oval bracelets</a></li>
-                                                        <li><a href="#">Pearl bracelets</a></li>
-                                                        <li><a href="#">Charm bracelets</a></li>
-                                                        <li><a href="#">Silver brcelets</a></li>
-                                                        <li><a href="#">Tennis bracelets</a></li> 
+                                                        {% if bracelets %}
+                                                            {% for bracelet in bracelets %}
+                                                                <li><a href="{{ bracelet.url }}">{{ bracelet.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Caratlane chain</a></li>
+                                                            <li><a href="#">Oval bracelets</a></li>
+                                                            <li><a href="#">Pearl bracelets</a></li>
+                                                            <li><a href="#">Charm bracelets</a></li>
+                                                            <li><a href="#">Silver brcelets</a></li>
+                                                            <li><a href="#">Tennis bracelets</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                             </div>
                                             <div class="row row-cols-1 row-cols-md-2">
                                                 <div class="col">
-                                                    <a href="{{ shop_url }}"><img src="https://placehold.co/580x160" class="border-radius-4px w-100" alt=""></a>
+                                                    <a href="{{ shop_url|default('/shop') }}"><img src="{{ shop_banner_1|default('https://placehold.co/580x160?text=Shop+Banner+1') }}" class="border-radius-4px w-100" alt="Shop Banner 1"></a>
                                                 </div>
                                                 <div class="col">
-                                                    <a href="{{ shop_url }}"><img src="https://placehold.co/580x160" class="border-radius-4px w-100" alt=""></a>
+                                                    <a href="{{ shop_url|default('/shop') }}"><img src="{{ shop_banner_2|default('https://placehold.co/580x160?text=Shop+Banner+2') }}" class="border-radius-4px w-100" alt="Shop Banner 2"></a>
                                                 </div>
                                             </div>
                                         </div> 
                                     </div>
                                 </li> 
                                 <li class="nav-item dropdown simple-dropdown">
-                                    <a href="{{ categories_url }}" class="nav-link">Categories</a>
+                                    <a href="{{ categories_url|default('/categories') }}" class="nav-link">Categories</a>
                                     <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink2"> 
                                         <div class="mega-menu m-auto">
                                             <div class="row md-m-0">
                                                 <div class="col-12 col-lg-9">
                                                     <div class="row row-cols-1 row-cols-lg-4 align-items-center justify-content-center">
-                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="{{ categories_url }}" class="d-none d-lg-block"> 
-                                                                <img src="https://placehold.co/190x140" class="border-radius-4px mb-5px" alt="">  
-                                                            </a>
-                                                            <a href="{{ categories_url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
-                                                                <span> 
-                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Rings</span> 
-                                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
-                                                                </span>
-                                                            </a> 
-                                                        </div>
-                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="{{ categories_url }}" class="d-none d-lg-block"> 
-                                                                <img src="https://placehold.co/190x140" class="border-radius-4px mb-5px" alt="">  
-                                                            </a>
-                                                            <a href="{{ categories_url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
-                                                                <span> 
-                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Bracelet</span> 
-                                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
-                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="{{ categories_url }}" class="d-none d-lg-block"> 
-                                                                <img src="https://placehold.co/190x140" class="border-radius-4px mb-5px" alt="">  
-                                                            </a>
-                                                            <a href="{{ categories_url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
-                                                                <span> 
-                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Earrings</span> 
-                                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
-                                                                </span>
-                                                            </a> 
-                                                        </div>
-                                                        <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="{{ categories_url }}" class="d-none d-lg-block"> 
-                                                                <img src="https://placehold.co/190x140" class="border-radius-4px mb-5px" alt="">  
-                                                            </a>
-                                                            <a href="{{ categories_url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
-                                                                <span> 
-                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Necklace</span> 
-                                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
-                                                                </span>
-                                                            </a> 
-                                                        </div>
-                                                        <div class="col text-start text-lg-center">
-                                                            <a href="{{ categories_url }}" class="d-none d-lg-block"> 
-                                                                <img src="https://placehold.co/190x140" class="border-radius-4px mb-5px" alt="">  
-                                                            </a>
-                                                            <a href="{{ categories_url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
-                                                                <span> 
-                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Pendants</span> 
-                                                                    <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
-                                                                </span>
-                                                            </a>
-                                                        </div>
+                                                        {% if categories %}
+                                                            {% for category in categories[:4] %}
+                                                                <div class="col mb-20px md-mb-10px text-start text-lg-center">
+                                                                    <a href="{{ category.url }}" class="d-none d-lg-block"> 
+                                                                        <img src="{{ category.image|default('https://placehold.co/190x140?text=' + category.title) }}" class="border-radius-4px mb-5px" alt="{{ category.title }}">  
+                                                                    </a>
+                                                                    <a href="{{ category.url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                        <span> 
+                                                                            <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ category.title }}</span> 
+                                                                            <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                        </span>
+                                                                    </a> 
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <div class="col mb-20px md-mb-10px text-start text-lg-center">
+                                                                <a href="{{ categories_url|default('/categories') }}" class="d-none d-lg-block"> 
+                                                                    <img src="{{ category_image_1|default('https://placehold.co/190x140?text=Rings') }}" class="border-radius-4px mb-5px" alt="Rings">  
+                                                                </a>
+                                                                <a href="{{ categories_url|default('/categories') }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                    <span> 
+                                                                        <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Rings</span> 
+                                                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                    </span>
+                                                                </a> 
+                                                            </div>
+                                                            <div class="col mb-20px md-mb-10px text-start text-lg-center">
+                                                                <a href="{{ categories_url|default('/categories') }}" class="d-none d-lg-block"> 
+                                                                    <img src="{{ category_image_2|default('https://placehold.co/190x140?text=Bracelet') }}" class="border-radius-4px mb-5px" alt="Bracelet">  
+                                                                </a>
+                                                                <a href="{{ categories_url|default('/categories') }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                    <span> 
+                                                                        <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Bracelet</span> 
+                                                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                            <div class="col mb-20px md-mb-10px text-start text-lg-center">
+                                                                <a href="{{ categories_url|default('/categories') }}" class="d-none d-lg-block"> 
+                                                                    <img src="{{ category_image_3|default('https://placehold.co/190x140?text=Earrings') }}" class="border-radius-4px mb-5px" alt="Earrings">  
+                                                                </a>
+                                                                <a href="{{ categories_url|default('/categories') }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                    <span> 
+                                                                        <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Earrings</span> 
+                                                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                    </span>
+                                                                </a> 
+                                                            </div>
+                                                            <div class="col mb-20px md-mb-10px text-start text-lg-center">
+                                                                <a href="{{ categories_url|default('/categories') }}" class="d-none d-lg-block"> 
+                                                                    <img src="{{ category_image_4|default('https://placehold.co/190x140?text=Necklace') }}" class="border-radius-4px mb-5px" alt="Necklace">  
+                                                                </a>
+                                                                <a href="{{ categories_url|default('/categories') }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                    <span> 
+                                                                        <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Necklace</span> 
+                                                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                    </span>
+                                                                </a> 
+                                                            </div>
+                                                        {% endif %}
+                                                        {% if categories and categories|length > 4 %}
+                                                            <div class="col text-start text-lg-center">
+                                                                <a href="{{ categories[4].url }}" class="d-none d-lg-block"> 
+                                                                    <img src="{{ categories[4].image|default('https://placehold.co/190x140?text=' + categories[4].title) }}" class="border-radius-4px mb-5px" alt="{{ categories[4].title }}">  
+                                                                </a>
+                                                                <a href="{{ categories[4].url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                    <span> 
+                                                                        <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ categories[4].title }}</span> 
+                                                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="col text-start text-lg-center">
+                                                                <a href="{{ categories_url|default('/categories') }}" class="d-none d-lg-block"> 
+                                                                    <img src="{{ category_image_5|default('https://placehold.co/190x140?text=Pendants') }}" class="border-radius-4px mb-5px" alt="Pendants">  
+                                                                </a>
+                                                                <a href="{{ categories_url|default('/categories') }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                                    <span> 
+                                                                        <span class="btn-text text-dark-gray fs-17 flex-shrink-0">Pendants</span> 
+                                                                        <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
+                                                                    </span>
+                                                                </a>
+                                                            </div>
+                                                        {% endif %}
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-md-4 d-none d-lg-flex">
                                                     <div>
-                                                        <a href="{{ categories_url }}"><img src="https://placehold.co/290x380" class="border-radius-4px" alt=""></a>
+                                                        <a href="{{ categories_url|default('/categories') }}"><img src="{{ category_banner|default('https://placehold.co/290x380?text=Categories') }}" class="border-radius-4px" alt="Categories Banner"></a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -201,16 +261,16 @@
                         </div>
                     </div>
                     <div class="col-lg-2 justify-content-end justify-content-lg-center">
-                        <a class="navbar-brand" href="{{ home_url }}">
-                            <img src="{{ logo_url }}" alt="" class="default-logo">
-                            <img src="{{ logo_url }}" alt="" class="alt-logo">
-                            <img src="{{ logo_url }}" alt="" class="mobile-logo"> 
+                        <a class="navbar-brand" href="{{ home_url|default('/') }}">
+                            <img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}" class="default-logo">
+                            <img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}" class="alt-logo">
+                            <img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}" class="mobile-logo"> 
                         </a>
                     </div>
                     <div class="col-auto col-lg-5 justify-content-end ms-auto md-pe-0">
                         <div class="header-icon">
                             <div class="widget-text icon alt-font fw-500 d-none d-sm-flex">
-                                <a href="{{ wishlist_url }}">Wishlist</a>
+                                <a href="{{ wishlist_url|default('/wishlist') }}">Wishlist</a>
                             </div>
                             <div class="header-account-icon icon alt-font">
                                 <div class="header-account dropdown"> 
@@ -219,34 +279,44 @@
                                         <span class="d-none d-sm-inline-block">My account</span>
                                     </a>
                                     <ul class="account-item-list">
-                                        <li class="account-item"><a href="#">Wishlist</a></li>
-                                        <li class="account-item"><a href="#">Order history</a></li>
-                                        <li class="account-item"><a href="#">Account details</a></li>
-                                        <li class="account-item"><a href="#">Customer support</a></li>
-                                        <li class="account-item"><a href="#">Logout</a></li>
+                                        {% if account_items %}
+                                            {% for item in account_items %}
+                                                <li class="account-item"><a href="{{ item.url }}">{{ item.name }}</a></li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="account-item"><a href="#">Wishlist</a></li>
+                                            <li class="account-item"><a href="#">Order history</a></li>
+                                            <li class="account-item"><a href="#">Account details</a></li>
+                                            <li class="account-item"><a href="#">Customer support</a></li>
+                                            <li class="account-item"><a href="#">Logout</a></li>
+                                        {% endif %}
                                     </ul>
                                 </div> 
                             </div>
                             <div class="header-cart-icon icon">
                                 <div class="header-cart dropdown">
-                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_count }}</span></a> 
+                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_count|default('0') }}</span></a> 
                                     <ul class="cart-item-list">
-                                        {% for item in cart_items %}
-                                        <li class="cart-item align-items-center">
-                                            <a href="javascript:void(0);" class="alt-font close">×</a>
-                                            <div class="product-image">
-                                                <a href="{{ item.url }}"><img src="{{ item.image }}" class="cart-thumb" alt=""></a>
-                                            </div>
-                                            <div class="product-detail alt-font">
-                                                <a href="{{ item.url }}">{{ item.name }}</a>
-                                                <span class="item-ammount">{{ item.price }}</span> 
-                                            </div>
-                                        </li>
-                                        {% endfor %}
+                                        {% if cart_items %}
+                                            {% for item in cart_items %}
+                                                <li class="cart-item align-items-center">
+                                                    <a href="javascript:void(0);" class="alt-font close">×</a>
+                                                    <div class="product-image">
+                                                        <a href="{{ item.url }}"><img src="{{ item.image }}" class="cart-thumb" alt="{{ item.name }}"></a>
+                                                    </div>
+                                                    <div class="product-detail alt-font">
+                                                        <a href="{{ item.url }}">{{ item.name }}</a>
+                                                        <span class="item-ammount">{{ item.price }}</span> 
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="cart-empty-message">Your cart is empty</li>
+                                        {% endif %}
                                         <li class="cart-total">
-                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal }}</span></div>
-                                            <a href="{{ cart_url }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
-                                            <a href="{{ checkout_url }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
+                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal|default('$0.00') }}</span></div>
+                                            <a href="{{ cart_url|default('/cart') }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
+                                            <a href="{{ checkout_url|default('/checkout') }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -258,42 +328,629 @@
         </header>
         <!-- end header -->
         <!-- start page title -->
-        <section class="half-section top-space-margin cover-background" style="background-image: url('{{ page_title_image_url }}')">
+        <section class="half-section top-space-margin cover-background" style="background-image: url('{{ page_title_image_url|default('/static/images/page-title-bg.jpg') }}')">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-12 text-center position-relative page-title-extra-large">
                         <div class="d-flex flex-column extra-very-small-screen" data-anime='{ "el": "childs", "translateY": [0, 0], "opacity": [0,1], "duration": 300, "delay": 0, "staggervalue": 100, "easing": "easeOutQuad" }'>
                             <div class="mt-auto">
-                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ page_heading }}</h1>
+                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ page_heading|default('Product Details') }}</h1>
                             </div>
                             <div class="fs-16 fw-500 alt-font text-dark-gray justify-content-center breadcrumb breadcrumb-style-01 mt-auto">
                                 <ul>
-                                    <li><a href="{{ home_url }}" class="text-dark-gray text-medium-gray-hover">{{ home_label }}</a></li>
-                                    <li>{{ page_name }}</li>
+                                    <li><a href="{{ home_url|default('/') }}" class="text-dark-gray text-medium-gray-hover">{{ home_label|default('Home') }}</a></li>
+                                    <li><a href="{{ shop_url|default('/shop') }}" class="text-dark-gray text-medium-gray-hover">{{ shop_label|default('Shop') }}</a></li>
+                                    <li>{{ page_name|default(product_name) }}</li>
                                 </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section> 
+        </section>
         <!-- end page title -->
-        <!-- start section -->
-        <section class="top-space-margin cover-background" style="background-image: url('{{ product_image_url }}')">
+        <!-- start product detail section -->
+        <section class="py-80px xs-py-50px">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-6">
-                        <img src="{{ product_image_url }}" alt="{{ product_name }}" class="product-image"/>
+                    <div class="col-lg-6 pe-lg-0">
+                        <div class="product-images">
+                            <!-- Main product image -->
+                            <div class="product-main-image mb-20px">
+                                <img src="{{ product_image_url|default('https://placehold.co/800x800?text=Product+Image') }}" alt="{{ product_name|default('Product Name') }}" class="w-100">
+                                {% if product_label %}
+                                    <span class="lable {{ product_label_class|default('new') }}">{{ product_label }}</span>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Product thumbnails -->
+                            {% if product_gallery %}
+                                <div class="product-thumbnails row row-cols-4 gx-12px">
+                                    {% for image in product_gallery %}
+                                        <div class="col">
+                                            <div class="product-thumb mb-12px">
+                                                <img src="{{ image.url }}" alt="{{ image.alt|default('Product thumbnail') }}" class="w-100">
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="col-lg-6 product-info">
-                        <h1>{{ product_name }}</h1>
-                        <span>{{ product_price }}</span>
-                        <p>{{ product_description }}</p>
-                        <!-- Add more product details and dynamic content here -->
+                    <div class="col-lg-6 ps-lg-5">
+                        <div class="product-details">
+                            <h2 class="product-title alt-font fw-600 text-dark-gray mb-10px">{{ product_name|default('Diamond Engagement Ring') }}</h2>
+                            
+                            <!-- Product price -->
+                            <div class="product-price mb-20px">
+                                {% if product_regular_price %}
+                                    <del class="me-2 text-medium-gray">{{ product_regular_price }}</del>
+                                {% endif %}
+                                <span class="fw-500 fs-24 text-dark-gray">{{ product_price|default('$1,299.00') }}</span>
+                            </div>
+                            
+                            <!-- Product rating -->
+                            {% if product_rating %}
+                                <div class="product-rating mb-20px">
+                                    <div class="star-rating">
+                                        {% for i in range(1, 6) %}
+                                            <i class="fas fa-star {% if i <= product_rating %}text-warning{% else %}text-light-gray{% endif %}"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <span class="rating-count">({{ product_review_count|default('12') }} reviews)</span>
+                                </div>
+                            {% endif %}
+                            
+                            <!-- Product description -->
+                            <div class="product-description mb-30px">
+                                <p>{{ product_description|default('This exquisite diamond engagement ring features a brilliant-cut center stone set in a classic prong setting. Crafted with the finest materials, this ring symbolizes eternal love and commitment. Perfect for that special moment when you ask the most important question of your life.') }}</p>
+                            </div>
+                            
+                            <!-- Product attributes -->
+                            {% if product_attributes %}
+                                <div class="product-attributes mb-30px">
+                                    {% for attribute in product_attributes %}
+                                        <div class="attribute-row mb-15px">
+                                            <div class="attribute-label fw-500 text-dark-gray">{{ attribute.name }}:</div>
+                                            <div class="attribute-options">
+                                                {% if attribute.type == 'color' %}
+                                                    <div class="color-options">
+                                                        {% for option in attribute.options %}
+                                                            <div class="color-option {% if option.selected %}selected{% endif %}" style="background-color: {{ option.color }};" data-value="{{ option.value }}"></div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% elif attribute.type == 'size' %}
+                                                    <div class="size-options">
+                                                        {% for option in attribute.options %}
+                                                            <div class="size-option {% if option.selected %}selected{% endif %}" data-value="{{ option.value }}">{{ option.label }}</div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% else %}
+                                                    <div class="option-buttons">
+                                                        {% for option in attribute.options %}
+                                                            <button class="option-button {% if option.selected %}selected{% endif %}" data-value="{{ option.value }}">{{ option.label }}</button>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <!-- Default attributes if none provided -->
+                                <div class="product-attributes mb-30px">
+                                    <div class="attribute-row mb-15px">
+                                        <div class="attribute-label fw-500 text-dark-gray">Metal:</div>
+                                        <div class="attribute-options">
+                                            <div class="option-buttons">
+                                                <button class="option-button selected" data-value="white-gold">White Gold</button>
+                                                <button class="option-button" data-value="yellow-gold">Yellow Gold</button>
+                                                <button class="option-button" data-value="rose-gold">Rose Gold</button>
+                                                <button class="option-button" data-value="platinum">Platinum</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="attribute-row mb-15px">
+                                        <div class="attribute-label fw-500 text-dark-gray">Size:</div>
+                                        <div class="attribute-options">
+                                            <div class="size-options">
+                                                <div class="size-option" data-value="4">4</div>
+                                                <div class="size-option" data-value="4.5">4.5</div>
+                                                <div class="size-option selected" data-value="5">5</div>
+                                                <div class="size-option" data-value="5.5">5.5</div>
+                                                <div class="size-option" data-value="6">6</div>
+                                                <div class="size-option" data-value="6.5">6.5</div>
+                                                <div class="size-option" data-value="7">7</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                            
+                            <!-- Quantity and add to cart -->
+                            <div class="product-actions mb-30px">
+                                <div class="quantity-wrapper d-flex align-items-center mb-20px">
+                                    <div class="quantity-label fw-500 text-dark-gray me-15px">Quantity:</div>
+                                    <div class="quantity-input d-flex">
+                                        <button class="quantity-decrease">-</button>
+                                        <input type="number" class="quantity-value" value="1" min="1" max="{{ product_stock|default('100') }}">
+                                        <button class="quantity-increase">+</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="action-buttons d-flex flex-wrap">
+                                    <button class="btn btn-dark-gray btn-large btn-round-edge me-15px mb-10px add-to-cart">
+                                        <i class="feather icon-feather-shopping-bag me-10px"></i>Add to Cart
+                                    </button>
+                                    <button class="btn btn-transparent-dark-gray btn-large btn-round-edge border-color-extra-medium-gray me-15px mb-10px add-to-wishlist">
+                                        <i class="feather icon-feather-heart me-10px"></i>Add to Wishlist
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Product meta -->
+                            <div class="product-meta">
+                                <div class="meta-item mb-10px">
+                                    <span class="meta-label fw-500 text-dark-gray">SKU:</span>
+                                    <span class="meta-value">{{ product_sku|default('JWL-DR-1001') }}</span>
+                                </div>
+                                <div class="meta-item mb-10px">
+                                    <span class="meta-label fw-500 text-dark-gray">Category:</span>
+                                    <span class="meta-value">
+                                        {% if product_categories %}
+                                            {% for category in product_categories %}
+                                                <a href="{{ category.url }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <a href="/shop/rings">Rings</a>, <a href="/shop/engagement">Engagement</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="meta-item mb-10px">
+                                    <span class="meta-label fw-500 text-dark-gray">Tags:</span>
+                                    <span class="meta-value">
+                                        {% if product_tags %}
+                                            {% for tag in product_tags %}
+                                                <a href="{{ tag.url }}">{{ tag.name }}</a>{% if not loop.last %}, {% endif %}
+                                            {% endfor %}
+                                        {% else %}
+                                            <a href="/shop/tags/diamond">Diamond</a>, <a href="/shop/tags/engagement">Engagement</a>, <a href="/shop/tags/luxury">Luxury</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                
+                                <!-- Social sharing -->
+                                <div class="social-sharing mt-20px">
+                                    <span class="fw-500 text-dark-gray me-15px">Share:</span>
+                                    <ul class="social-icons">
+                                        <li><a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a></li>
+                                        <li><a href="#" class="twitter"><i class="fab fa-twitter"></i></a></li>
+                                        <li><a href="#" class="instagram"><i class="fab fa-instagram"></i></a></li>
+                                        <li><a href="#" class="pinterest"><i class="fab fa-pinterest-p"></i></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- end section -->
+        <!-- end product detail section -->
+        
+        <!-- start product tabs section -->
+        <section class="pb-80px xs-pb-50px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="product-tabs">
+                            <ul class="nav nav-tabs alt-font fw-500 text-dark-gray" id="productTabs" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="additional-info-tab" data-bs-toggle="tab" data-bs-target="#additional-info" type="button" role="tab" aria-controls="additional-info" aria-selected="false">Additional Information</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab" aria-controls="reviews" aria-selected="false">Reviews ({{ product_review_count|default('12') }})</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="productTabsContent">
+                                <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+                                    <div class="product-description-content">
+                                        {{ product_full_description|default('<p>This exquisite diamond engagement ring features a brilliant-cut center stone set in a classic prong setting. The center diamond is of exceptional quality, with excellent cut, clarity, and color that maximizes its brilliance and fire.</p><p>The band is crafted from your choice of 14K white gold, yellow gold, rose gold, or platinum, providing both durability and timeless elegance. The delicate band enhances the center stone, allowing it to capture and reflect light from every angle.</p><p>Each ring is meticulously handcrafted by our master jewelers with decades of experience, ensuring the highest quality and attention to detail. The prong setting securely holds the diamond while allowing maximum light exposure for optimal brilliance.</p><p>This ring comes with a certificate of authenticity and a luxury presentation box, making it the perfect symbol of your love and commitment. Whether for an engagement, anniversary, or special occasion, this ring is designed to be treasured for generations.</p>')|safe }}
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="additional-info" role="tabpanel" aria-labelledby="additional-info-tab">
+                                    <div class="additional-info-content">
+                                        <table class="product-attributes-table w-100">
+                                            <tbody>
+                                                {% if product_specifications %}
+                                                    {% for spec in product_specifications %}
+                                                        <tr>
+                                                            <th>{{ spec.name }}</th>
+                                                            <td>{{ spec.value }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <tr>
+                                                        <th>Metal</th>
+                                                        <td>14K White Gold, Yellow Gold, Rose Gold, Platinum</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Center Stone</th>
+                                                        <td>Diamond</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Diamond Carat</th>
+                                                        <td>1.0 ct</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Diamond Cut</th>
+                                                        <td>Brilliant Round</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Diamond Color</th>
+                                                        <td>G-H</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Diamond Clarity</th>
+                                                        <td>VS1-VS2</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Setting</th>
+                                                        <td>Prong</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Ring Size</th>
+                                                        <td>4-9 (Resizable)</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Width</th>
+                                                        <td>2.0 mm</td>
+                                                    </tr>
+                                                {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                                    <div class="reviews-content">
+                                        <div class="reviews-summary mb-40px">
+                                            <div class="row align-items-center">
+                                                <div class="col-lg-4 mb-30px mb-lg-0">
+                                                    <div class="average-rating text-center">
+                                                        <div class="rating-number fw-600 text-dark-gray fs-70">{{ product_average_rating|default('4.8') }}</div>
+                                                        <div class="star-rating mb-15px">
+                                                            {% for i in range(1, 6) %}
+                                                                <i class="fas fa-star {% if i <= product_average_rating|default(4.8)|int %}text-warning{% elif i <= (product_average_rating|default(4.8)|float + 0.5) %}text-warning-half{% else %}text-light-gray{% endif %}"></i>
+                                                            {% endfor %}
+                                                        </div>
+                                                        <div class="rating-count">Based on {{ product_review_count|default('12') }} reviews</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-8">
+                                                    <div class="rating-bars">
+                                                        {% for i in range(5, 0, -1) %}
+                                                            <div class="rating-bar d-flex align-items-center mb-10px">
+                                                                <div class="rating-label me-15px">{{ i }} Star</div>
+                                                                <div class="progress flex-grow-1 me-15px">
+                                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: {{ product_rating_distribution[i]|default(85 if i == 5 else (10 if i == 4 else (3 if i == 3 else (1 if i == 2 else 1)))) }}%" aria-valuenow="{{ product_rating_distribution[i]|default(85 if i == 5 else (10 if i == 4 else (3 if i == 3 else (1 if i == 2 else 1)))) }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                </div>
+                                                                <div class="rating-percentage">{{ product_rating_distribution[i]|default(85 if i == 5 else (10 if i == 4 else (3 if i == 3 else (1 if i == 2 else 1)))) }}%</div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="reviews-list mb-40px">
+                                            <h3 class="reviews-title fw-500 text-dark-gray mb-30px">Customer Reviews</h3>
+                                            
+                                            {% if product_reviews %}
+                                                {% for review in product_reviews %}
+                                                    <div class="review-item mb-30px pb-30px border-bottom border-color-extra-light-gray">
+                                                        <div class="review-header d-flex justify-content-between mb-15px">
+                                                            <div class="reviewer-info">
+                                                                <h4 class="reviewer-name fw-500 text-dark-gray mb-5px">{{ review.author }}</h4>
+                                                                <div class="review-date text-medium-gray">{{ review.date }}</div>
+                                                            </div>
+                                                            <div class="review-rating">
+                                                                {% for i in range(1, 6) %}
+                                                                    <i class="fas fa-star {% if i <= review.rating %}text-warning{% else %}text-light-gray{% endif %}"></i>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                        <div class="review-content">
+                                                            <p>{{ review.content }}</p>
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            {% else %}
+                                                <!-- Default reviews if none provided -->
+                                                <div class="review-item mb-30px pb-30px border-bottom border-color-extra-light-gray">
+                                                    <div class="review-header d-flex justify-content-between mb-15px">
+                                                        <div class="reviewer-info">
+                                                            <h4 class="reviewer-name fw-500 text-dark-gray mb-5px">Jennifer Smith</h4>
+                                                            <div class="review-date text-medium-gray">June 15, 2023</div>
+                                                        </div>
+                                                        <div class="review-rating">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-content">
+                                                        <p>This ring exceeded all my expectations! The diamond is absolutely stunning and catches light from every angle. The craftsmanship is impeccable, and it fits perfectly. My fiancée was speechless when I proposed with this ring. Worth every penny!</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="review-item mb-30px pb-30px border-bottom border-color-extra-light-gray">
+                                                    <div class="review-header d-flex justify-content-between mb-15px">
+                                                        <div class="reviewer-info">
+                                                            <h4 class="reviewer-name fw-500 text-dark-gray mb-5px">Michael Johnson</h4>
+                                                            <div class="review-date text-medium-gray">May 28, 2023</div>
+                                                        </div>
+                                                        <div class="review-rating">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-light-gray"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-content">
+                                                        <p>Beautiful ring with excellent quality. The diamond is brilliant and the setting is secure. I took off one star because the sizing ran a bit small, but the customer service was very helpful with the exchange process. My wife loves it!</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="review-item">
+                                                    <div class="review-header d-flex justify-content-between mb-15px">
+                                                        <div class="reviewer-info">
+                                                            <h4 class="reviewer-name fw-500 text-dark-gray mb-5px">Sarah Williams</h4>
+                                                            <div class="review-date text-medium-gray">April 12, 2023</div>
+                                                        </div>
+                                                        <div class="review-rating">
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                            <i class="fas fa-star text-warning"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="review-content">
+                                                        <p>I've been wearing this ring for three months now and I'm still in awe every time I look at it. The diamond is so clear and sparkly! The white gold setting complements it perfectly. I've received countless compliments. The packaging was also beautiful and made the unboxing experience special.</p>
+                                                    </div>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="review-form">
+                                            <h3 class="form-title fw-500 text-dark-gray mb-30px">Write a Review</h3>
+                                            <form action="{{ review_form_action|default('#') }}" method="post">
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-20px">
+                                                        <input type="text" class="form-control" placeholder="Your Name*" required>
+                                                    </div>
+                                                    <div class="col-md-6 mb-20px">
+                                                        <input type="email" class="form-control" placeholder="Your Email*" required>
+                                                    </div>
+                                                    <div class="col-12 mb-20px">
+                                                        <div class="rating-select">
+                                                            <label class="fw-500 text-dark-gray mb-10px">Your Rating*</label>
+                                                            <div class="rating-stars">
+                                                                <i class="far fa-star" data-rating="1"></i>
+                                                                <i class="far fa-star" data-rating="2"></i>
+                                                                <i class="far fa-star" data-rating="3"></i>
+                                                                <i class="far fa-star" data-rating="4"></i>
+                                                                <i class="far fa-star" data-rating="5"></i>
+                                                            </div>
+                                                            <input type="hidden" name="rating" value="0" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12 mb-20px">
+                                                        <textarea class="form-control" rows="5" placeholder="Your Review*" required></textarea>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <button type="submit" class="btn btn-dark-gray btn-medium btn-round-edge">Submit Review</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end product tabs section -->
+        
+        <!-- start related products section -->
+        <section class="pb-80px xs-pb-50px">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="section-title fw-600 text-dark-gray text-center mb-50px">Related Products</h3>
+                        
+                        <div class="related-products swiper-container">
+                            <div class="swiper-wrapper">
+                                {% if related_products %}
+                                    {% for product in related_products %}
+                                        <div class="swiper-slide">
+                                            <div class="shop-box">
+                                                <div class="shop-image mb-25px">
+                                                    <a href="{{ product.url }}">
+                                                        <img src="{{ product.image }}" alt="{{ product.name }}" class="w-100"> 
+                                                        {% if product.label %}
+                                                            <span class="lable {{ product.label_class }}">{{ product.label }}</span>
+                                                        {% endif %}
+                                                    </a>
+                                                    <div class="shop-buttons-wrap">
+                                                        <a href="{{ product.url }}" class="alt-font btn btn-small btn-box-shadow btn-dark-gray btn-round-edge left-icon add-to-cart">
+                                                            <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="shop-hover d-flex justify-content-center"> 
+                                                        <ul>
+                                                            <li>
+                                                                <a href="{{ product.wishlist_url|default('#') }}" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="{{ product.quick_view_url|default('#') }}" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                                            </li>
+                                                        </ul> 
+                                                    </div>
+                                                </div>
+                                                <div class="shop-footer text-center">
+                                                    <a href="{{ product.url }}" class="text-dark-gray fs-19 fw-500">{{ product.name }}</a>
+                                                    <div class="price">
+                                                        {% if product.regular_price %}
+                                                            <del>{{ product.regular_price }}</del>
+                                                        {% endif %}
+                                                        {{ product.price }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <!-- Default related products if none provided -->
+                                    <div class="swiper-slide">
+                                        <div class="shop-box">
+                                            <div class="shop-image mb-25px">
+                                                <a href="/shop/product/2">
+                                                    <img src="https://placehold.co/600x800?text=Gold+Necklace" alt="Gold Chain Necklace" class="w-100"> 
+                                                    <span class="lable hot">Hot</span>
+                                                </a>
+                                                <div class="shop-buttons-wrap">
+                                                    <a href="/shop/product/2" class="alt-font btn btn-small btn-box-shadow btn-dark-gray btn-round-edge left-icon add-to-cart">
+                                                        <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                                    </a>
+                                                </div>
+                                                <div class="shop-hover d-flex justify-content-center"> 
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                                        </li>
+                                                    </ul> 
+                                                </div>
+                                            </div>
+                                            <div class="shop-footer text-center">
+                                                <a href="/shop/product/2" class="text-dark-gray fs-19 fw-500">Gold Chain Necklace</a>
+                                                <div class="price"><del>$999.00</del>$899.00</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="swiper-slide">
+                                        <div class="shop-box">
+                                            <div class="shop-image mb-25px">
+                                                <a href="/shop/product/3">
+                                                    <img src="https://placehold.co/600x800?text=Pearl+Earrings" alt="Pearl Earrings" class="w-100">
+                                                </a>
+                                                <div class="shop-buttons-wrap">
+                                                    <a href="/shop/product/3" class="alt-font btn btn-small btn-box-shadow btn-dark-gray btn-round-edge left-icon add-to-cart">
+                                                        <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                                    </a>
+                                                </div>
+                                                <div class="shop-hover d-flex justify-content-center"> 
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                                        </li>
+                                                    </ul> 
+                                                </div>
+                                            </div>
+                                            <div class="shop-footer text-center">
+                                                <a href="/shop/product/3" class="text-dark-gray fs-19 fw-500">Pearl Earrings</a>
+                                                <div class="price"><del>$599.00</del>$499.00</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="swiper-slide">
+                                        <div class="shop-box">
+                                            <div class="shop-image mb-25px">
+                                                <a href="/shop/product/4">
+                                                    <img src="https://placehold.co/600x800?text=Silver+Bracelet" alt="Silver Bracelet" class="w-100"> 
+                                                    <span class="lable sale">Sale</span>
+                                                </a>
+                                                <div class="shop-buttons-wrap">
+                                                    <a href="/shop/product/4" class="alt-font btn btn-small btn-box-shadow btn-dark-gray btn-round-edge left-icon add-to-cart">
+                                                        <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                                    </a>
+                                                </div>
+                                                <div class="shop-hover d-flex justify-content-center"> 
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                                        </li>
+                                                    </ul> 
+                                                </div>
+                                            </div>
+                                            <div class="shop-footer text-center">
+                                                <a href="/shop/product/4" class="text-dark-gray fs-19 fw-500">Silver Bracelet</a>
+                                                <div class="price"><del>$399.00</del>$349.00</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="swiper-slide">
+                                        <div class="shop-box">
+                                            <div class="shop-image mb-25px">
+                                                <a href="/shop/product/5">
+                                                    <img src="https://placehold.co/600x800?text=Platinum+Band" alt="Platinum Wedding Band" class="w-100">
+                                                </a>
+                                                <div class="shop-buttons-wrap">
+                                                    <a href="/shop/product/5" class="alt-font btn btn-small btn-box-shadow btn-dark-gray btn-round-edge left-icon add-to-cart">
+                                                        <i class="feather icon-feather-shopping-bag"></i><span class="quick-view-text button-text">Add to cart</span>
+                                                    </a>
+                                                </div>
+                                                <div class="shop-hover d-flex justify-content-center"> 
+                                                    <ul>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Add to wishlist"><i class="feather icon-feather-heart fs-16"></i></a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="#" class="bg-white w-40px h-40px text-dark-gray d-flex align-items-center justify-content-center rounded-circle ms-5px me-5px box-shadow-large" data-bs-toggle="tooltip" data-bs-placement="left" title="Quick shop"><i class="feather icon-feather-eye fs-16"></i></a>
+                                                        </li>
+                                                    </ul> 
+                                                </div>
+                                            </div>
+                                            <div class="shop-footer text-center">
+                                                <a href="/shop/product/5" class="text-dark-gray fs-19 fw-500">Platinum Wedding Band</a>
+                                                <div class="price"><del>$1,299.00</del>$1,199.00</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <!-- Add navigation -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- end related products section -->
+        
+        <!-- javascript libraries -->
+        <script type="text/javascript" src="{{ js_jquery_url|default('/static/js/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ js_vendors_url|default('/static/js/vendors.min.js') }}"></script>
+        <script type="text/javascript" src="{{ js_main_url|default('/static/js/main.js') }}"></script>
     </body>
 </html>

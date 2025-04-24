@@ -1,26 +1,26 @@
 ﻿<!doctype html>
 <html class="no-js" lang="en">
     <head>
-        <title>{{ page_title }}</title>
+        <title>{{ page_title|default('Checkout - Jewelry Store') }}</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="author" content="ThemeZaa">
+        <meta name="author" content="{{ author_name|default('Jewelry Store') }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <meta name="description" content="{{ meta_description }}">
+        <meta name="description" content="{{ meta_description|default('Complete your purchase at our jewelry store.') }}">
         <!-- favicon icon -->
-        <link rel="shortcut icon" href="{{ favicon_url }}">
-        <link rel="apple-touch-icon" href="{{ apple_icon_url }}">
-        <link rel="apple-touch-icon" sizes="72x72" href="{{ apple_icon_72x72_url }}">
-        <link rel="apple-touch-icon" sizes="114x114" href="{{ apple_icon_114x114_url }}">
+        <link rel="shortcut icon" href="{{ favicon_url|default('/static/images/favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ apple_icon_url|default('/static/images/apple-touch-icon.png') }}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ apple_icon_72x72_url|default('/static/images/apple-touch-icon-72x72.png') }}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ apple_icon_114x114_url|default('/static/images/apple-touch-icon-114x114.png') }}">
         <!-- google fonts preconnect -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <!-- style sheets and font icons -->
-        <link rel="stylesheet" href="{{ css_vendors_url }}"/>
-        <link rel="stylesheet" href="{{ css_icon_url }}"/>
-        <link rel="stylesheet" href="{{ css_style_url }}"/>
-        <link rel="stylesheet" href="{{ css_responsive_url }}"/>
-        <link rel="stylesheet" href="{{ jewellery_store_css_url }}" />
+        <link rel="stylesheet" href="{{ css_vendors_url|default('/static/css/vendors.min.css') }}"/>
+        <link rel="stylesheet" href="{{ css_icon_url|default('/static/css/icon.min.css') }}"/>
+        <link rel="stylesheet" href="{{ css_style_url|default('/static/css/style.css') }}"/>
+        <link rel="stylesheet" href="{{ css_responsive_url|default('/static/css/responsive.css') }}"/>
+        <link rel="stylesheet" href="{{ jewellery_store_css_url|default('/static/demos/jewellery-store/jewellery-store.css') }}" />
     </head>
     <body data-mobile-nav-style="classic">
         <!-- start header -->
@@ -30,8 +30,8 @@
                 <div class="container-fluid">
                     <div class="row h-40px align-items-center m-0">
                         <div class="col-12 justify-content-center alt-font">
-                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer }}</div>
-                            <a href="{{ offer_link }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text }}</span></a>
+                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer|default('Free shipping on all orders over $100') }}</div>
+                            <a href="{{ offer_link|default('#') }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text|default('Shop Now') }}</span></a>
                         </div>
                     </div>
                 </div>
@@ -49,9 +49,9 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav"> 
                             <ul class="navbar-nav alt-font"> 
-                                <li class="nav-item"><a href="{{ home_url }}" class="nav-link">Home</a></li>
+                                <li class="nav-item"><a href="{{ home_url|default('/') }}" class="nav-link">Home</a></li>
                                 <li class="nav-item dropdown submenu">
-                                    <a href="{{ shop_url }}" class="nav-link">Shop</a>
+                                    <a href="{{ shop_url|default('/shop') }}" class="nav-link">Shop</a>
                                     <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink1"> 
                                         <div class="d-lg-flex mega-menu m-auto flex-column">
@@ -59,56 +59,86 @@
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Rings</li>
-                                                        <li><a href="#">Engagement</a></li>
-                                                        <li><a href="#">Gold rings</a></li>
-                                                        <li><a href="#">Casual rings</a></li>
-                                                        <li><a href="#">Silver rings</a></li>
-                                                        <li><a href="#">Platinum rings</a></li>
-                                                        <li><a href="#">Diamond rings</a></li> 
+                                                        {% if rings %}
+                                                            {% for ring in rings %}
+                                                                <li><a href="{{ ring.url }}">{{ ring.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Engagement</a></li>
+                                                            <li><a href="#">Gold rings</a></li>
+                                                            <li><a href="#">Casual rings</a></li>
+                                                            <li><a href="#">Silver rings</a></li>
+                                                            <li><a href="#">Platinum rings</a></li>
+                                                            <li><a href="#">Diamond rings</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Earrings</li>
-                                                        <li><a href="#">Jhumkas</a></li>
-                                                        <li><a href="#">Barbells</a></li>
-                                                        <li><a href="#">Hug hoops</a></li>
-                                                        <li><a href="#">Tear drop</a></li>
-                                                        <li><a href="#">Suidhaga</a></li>
-                                                        <li><a href="#">Gemstone</a></li> 
+                                                        {% if earrings %}
+                                                            {% for earring in earrings %}
+                                                                <li><a href="{{ earring.url }}">{{ earring.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Jhumkas</a></li>
+                                                            <li><a href="#">Barbells</a></li>
+                                                            <li><a href="#">Hug hoops</a></li>
+                                                            <li><a href="#">Tear drop</a></li>
+                                                            <li><a href="#">Suidhaga</a></li>
+                                                            <li><a href="#">Gemstone</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Necklaces</li>
-                                                        <li><a href="#">Bib necklece</a></li>
-                                                        <li><a href="#">Collar necklece</a></li>
-                                                        <li><a href="#">Rope necklece</a></li>
-                                                        <li><a href="#">Locket necklece</a></li>
-                                                        <li><a href="#">Chain necklece</a></li>
-                                                        <li><a href="#">Opera nacklece</a></li> 
+                                                        {% if necklaces %}
+                                                            {% for necklace in necklaces %}
+                                                                <li><a href="{{ necklace.url }}">{{ necklace.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Bib necklece</a></li>
+                                                            <li><a href="#">Collar necklece</a></li>
+                                                            <li><a href="#">Rope necklece</a></li>
+                                                            <li><a href="#">Locket necklece</a></li>
+                                                            <li><a href="#">Chain necklece</a></li>
+                                                            <li><a href="#">Opera nacklece</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col md-mb-5px">
                                                     <ul>  
                                                         <li class="sub-title">Pendants</li>
-                                                        <li><a href="#">Alphabet</a></li>
-                                                        <li><a href="#">Mangalsutra</a></li>
-                                                        <li><a href="#">Religious</a></li>
-                                                        <li><a href="#">Diamond</a></li>
-                                                        <li><a href="#">Heart shaped</a></li>
-                                                        <li><a href="#">Gemstone</a></li> 
+                                                        {% if pendants %}
+                                                            {% for pendant in pendants %}
+                                                                <li><a href="{{ pendant.url }}">{{ pendant.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Alphabet</a></li>
+                                                            <li><a href="#">Mangalsutra</a></li>
+                                                            <li><a href="#">Religious</a></li>
+                                                            <li><a href="#">Diamond</a></li>
+                                                            <li><a href="#">Heart shaped</a></li>
+                                                            <li><a href="#">Gemstone</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                                 <div class="col">
                                                     <ul>  
                                                         <li class="sub-title">Bracelet</li>
-                                                        <li><a href="#">Caratlane chain</a></li>
-                                                        <li><a href="#">Oval bracelets</a></li>
-                                                        <li><a href="#">Pearl bracelets</a></li>
-                                                        <li><a href="#">Charm bracelets</a></li>
-                                                        <li><a href="#">Silver brcelets</a></li>
-                                                        <li><a href="#">Tennis bracelets</a></li> 
+                                                        {% if bracelets %}
+                                                            {% for bracelet in bracelets %}
+                                                                <li><a href="{{ bracelet.url }}">{{ bracelet.name }}</a></li>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <li><a href="#">Caratlane chain</a></li>
+                                                            <li><a href="#">Oval bracelets</a></li>
+                                                            <li><a href="#">Pearl bracelets</a></li>
+                                                            <li><a href="#">Charm bracelets</a></li>
+                                                            <li><a href="#">Silver brcelets</a></li>
+                                                            <li><a href="#">Tennis bracelets</a></li>
+                                                        {% endif %}
                                                     </ul>
                                                 </div>
                                             </div>
@@ -119,30 +149,30 @@
                                     <a href="javascript:void(0);" class="nav-link">Pages</a>
                                     <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
                                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3"> 
-                                        <li><a href="{{ about_url }}">About</a></li>
-                                        <li><a href="{{ faq_url }}">Faq</a></li>
-                                        <li><a href="{{ wishlist_url }}">Wishlist</a></li>
-                                        <li><a href="{{ account_url }}">Account</a></li>
-                                        <li><a href="{{ cart_url }}">Cart</a></li>
-                                        <li><a href="{{ checkout_url }}">Checkout</a></li>
+                                        <li><a href="{{ about_url|default('/about') }}">About</a></li>
+                                        <li><a href="{{ faq_url|default('/faq') }}">Faq</a></li>
+                                        <li><a href="{{ wishlist_url|default('/wishlist') }}">Wishlist</a></li>
+                                        <li><a href="{{ account_url|default('/account') }}">Account</a></li>
+                                        <li><a href="{{ cart_url|default('/cart') }}">Cart</a></li>
+                                        <li><a href="{{ checkout_url|default('/checkout') }}">Checkout</a></li>
                                     </ul>
                                 </li>
-                                <li class="nav-item"><a href="{{ blog_url }}" class="nav-link">Blog</a></li>
-                                <li class="nav-item"><a href="{{ contact_url }}" class="nav-link">Contact</a></li>
+                                <li class="nav-item"><a href="{{ blog_url|default('/blog') }}" class="nav-link">Blog</a></li>
+                                <li class="nav-item"><a href="{{ contact_url|default('/contact') }}" class="nav-link">Contact</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-2 justify-content-end justify-content-lg-center">
-                        <a class="navbar-brand" href="{{ home_url }}">
-                            <img src="{{ logo_url }}" alt="" class="default-logo">
-                            <img src="{{ logo_url }}" alt="" class="alt-logo">
-                            <img src="{{ logo_url }}" alt="" class="mobile-logo"> 
+                        <a class="navbar-brand" href="{{ home_url|default('/') }}">
+                            <img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}" class="default-logo">
+                            <img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}" class="alt-logo">
+                            <img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}" class="mobile-logo"> 
                         </a>
                     </div>
                     <div class="col-auto col-lg-5 justify-content-end ms-auto md-pe-0">
                         <div class="header-icon">
                             <div class="widget-text icon alt-font fw-500 d-none d-sm-flex">
-                                <a href="{{ wishlist_url }}">Wishlist</a>
+                                <a href="{{ wishlist_url|default('/wishlist') }}">Wishlist</a>
                             </div>
                             <div class="header-account-icon icon alt-font">
                                 <div class="header-account dropdown"> 
@@ -151,11 +181,17 @@
                                         <span class="d-none d-sm-inline-block">My account</span>
                                     </a>
                                     <ul class="account-item-list">
-                                        <li class="account-item"><a href="#">Wishlist</a></li>
-                                        <li class="account-item"><a href="#">Order history</a></li>
-                                        <li class="account-item"><a href="#">Account details</a></li>
-                                        <li class="account-item"><a href="#">Customer support</a></li>
-                                        <li class="account-item"><a href="#">Logout</a></li>
+                                        {% if account_items %}
+                                            {% for item in account_items %}
+                                                <li class="account-item"><a href="{{ item.url }}">{{ item.name }}</a></li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="account-item"><a href="#">Wishlist</a></li>
+                                            <li class="account-item"><a href="#">Order history</a></li>
+                                            <li class="account-item"><a href="#">Account details</a></li>
+                                            <li class="account-item"><a href="#">Customer support</a></li>
+                                            <li class="account-item"><a href="#">Logout</a></li>
+                                        {% endif %}
                                     </ul>
                                 </div> 
                             </div>
@@ -163,10 +199,10 @@
                                 <a href="javascript:void(0)" class="search-form-icon header-search-form xs-ps-10px"><i class="feather icon-feather-search"></i></a> 
                                 <div class="search-form-wrapper">
                                     <button title="Close" type="button" class="search-close alt-font">×</button>
-                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="{{ search_result_url }}">
+                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="{{ search_result_url|default('/search') }}">
                                         <div class="search-form-box">
-                                            <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">What are you looking for?</h2>
-                                            <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="Enter your keywords..." name="s" value="" type="text" autocomplete="off">
+                                            <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">{{ search_heading|default('What are you looking for?') }}</h2>
+                                            <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="{{ search_placeholder|default('Enter your keywords...') }}" name="s" value="" type="text" autocomplete="off">
                                             <button type="submit" class="search-button">
                                                 <i class="feather icon-feather-search" aria-hidden="true"></i> 
                                             </button>
@@ -176,24 +212,28 @@
                             </div>
                             <div class="header-cart-icon icon">
                                 <div class="header-cart dropdown">
-                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_count }}</span></a> 
+                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_count|default('0') }}</span></a> 
                                     <ul class="cart-item-list">
-                                        {% for item in cart_items %}
-                                        <li class="cart-item align-items-center">
-                                            <a href="javascript:void(0);" class="alt-font close">×</a>
-                                            <div class="product-image">
-                                                <a href="{{ item.url }}"><img src="{{ item.image }}" class="cart-thumb" alt=""></a>
-                                            </div>
-                                            <div class="product-detail alt-font">
-                                                <a href="{{ item.url }}">{{ item.name }}</a>
-                                                <span class="item-ammount">{{ item.price }}</span> 
-                                            </div>
-                                        </li>
-                                        {% endfor %}
+                                        {% if cart_items %}
+                                            {% for item in cart_items %}
+                                                <li class="cart-item align-items-center">
+                                                    <a href="javascript:void(0);" class="alt-font close">×</a>
+                                                    <div class="product-image">
+                                                        <a href="{{ item.url }}"><img src="{{ item.image }}" class="cart-thumb" alt="{{ item.name }}"></a>
+                                                    </div>
+                                                    <div class="product-detail alt-font">
+                                                        <a href="{{ item.url }}">{{ item.name }}</a>
+                                                        <span class="item-ammount">{{ item.price }}</span> 
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        {% else %}
+                                            <li class="cart-empty-message">Your cart is empty</li>
+                                        {% endif %}
                                         <li class="cart-total">
-                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal }}</span></div>
-                                            <a href="{{ cart_url }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
-                                            <a href="{{ checkout_url }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
+                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal|default('$0.00') }}</span></div>
+                                            <a href="{{ cart_url|default('/cart') }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
+                                            <a href="{{ checkout_url|default('/checkout') }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -205,18 +245,18 @@
         </header>
         <!-- end header -->
         <!-- start page title -->
-        <section class="half-section top-space-margin cover-background" style="background-image: url('{{ page_title_image_url }}')">
+        <section class="half-section top-space-margin cover-background" style="background-image: url('{{ page_title_image_url|default('/static/images/page-title-bg.jpg') }}')">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-8 text-center position-relative page-title-extra-large">
                         <div class="d-flex flex-column extra-very-small-screen">
                             <div class="mt-auto">
-                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ page_heading }}</h1>
+                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ page_heading|default('Checkout') }}</h1>
                             </div>
                             <div class="fs-16 fw-500 alt-font text-dark-gray justify-content-center breadcrumb breadcrumb-style-01 mt-auto">
                                 <ul>
-                                    <li><a href="{{ home_url }}" class="text-dark-gray text-medium-gray-hover">{{ home_label }}</a></li>
-                                    <li>{{ page_name }}</li>
+                                    <li><a href="{{ home_url|default('/') }}" class="text-dark-gray text-medium-gray-hover">{{ home_label|default('Home') }}</a></li>
+                                    <li>{{ page_name|default('Checkout') }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -235,7 +275,7 @@
                                 <i class="feather icon-feather-user top-9px position-relative text-dark-gray icon-small"></i>
                             </div>
                             <div class="feature-box-content">
-                                <span class="d-inline-block text-dark-gray align-middle alt-font fw-500">Returning customer? <a href="#" class="text-decoration-line-bottom fw-600 text-dark-gray">Click here to login</a></span> 
+                                <span class="d-inline-block text-dark-gray align-middle alt-font fw-500">Returning customer? <a href="{{ login_url|default('#') }}" class="text-decoration-line-bottom fw-600 text-dark-gray">Click here to login</a></span> 
                             </div>
                         </div>
                     </div>
@@ -248,7 +288,7 @@
                                 <i class="feather icon-feather-scissors top-9px position-relative text-dark-gray icon-small"></i>
                             </div>
                             <div class="feature-box-content">
-                                <span class="d-inline-block text-dark-gray align-middle alt-font fw-500">Have a coupon? <a href="#" class="text-decoration-line-bottom fw-600 text-dark-gray">Click here to enter your code</a></span>
+                                <span class="d-inline-block text-dark-gray align-middle alt-font fw-500">Have a coupon? <a href="{{ coupon_url|default('#') }}" class="text-decoration-line-bottom fw-600 text-dark-gray">Click here to enter your code</a></span>
                             </div>
                         </div>
                     </div>
@@ -256,23 +296,23 @@
                 <div class="row align-items-start">
                     <div class="col-lg-7 pe-50px md-pe-15px md-mb-50px xs-mb-35px">
                         <span class="fs-26 alt-font fw-600 text-dark-gray mb-20px d-block">Billing details</span>
-                        <form class="">
+                        <form class="" action="{{ checkout_form_action|default('/process-checkout') }}" method="post">
                             <div class="row">
                                 <div class="col-md-6 mb-20px">
                                     <label class="mb-10px">First name <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small" type="text" required>
+                                    <input class="border-radius-4px input-small" type="text" name="first_name" required>
                                 </div>
                                 <div class="col-md-6 mb-20px">
                                     <label class="mb-10px">Last name <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small" type="text" required>
+                                    <input class="border-radius-4px input-small" type="text" name="last_name" required>
                                 </div>
                                 <div class="col-12 mb-20px">
                                     <label class="mb-10px">Company name (optional)</label>
-                                    <input class="border-radius-4px input-small" type="text">
+                                    <input class="border-radius-4px input-small" type="text" name="company_name">
                                 </div>
                                 <div class="col-12 mb-20px">
-                                    <label class="mb-10px" for="contry2">Country <span class="text-red">*</span></label>
-                                    <select name="contry" id="contry2" class="form-select select-small">
+                                    <label class="mb-10px" for="country">Country <span class="text-red">*</span></label>
+                                    <select name="country" id="country" class="form-select select-small">
                                         <option value="">Select a country</option>
                                         <option value="Afganistan">Afghanistan</option>
                                         <option value="Albania">Albania</option>
@@ -281,36 +321,36 @@
                                 </div>
                                 <div class="col-12 mb-20px">
                                     <label class="mb-10px">Street address <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small mb-20px" type="text" placeholder="House number and street name">
-                                    <input class="border-radius-4px input-small" type="text" placeholder="Apartment,suite,unit etc. (optional)">
+                                    <input class="border-radius-4px input-small mb-20px" type="text" name="address_line1" placeholder="House number and street name" required>
+                                    <input class="border-radius-4px input-small" type="text" name="address_line2" placeholder="Apartment,suite,unit etc. (optional)">
                                 </div>
                                 <div class="col-12 mb-20px">
                                     <label class="mb-10px">Town / City <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small" type="text" required>
+                                    <input class="border-radius-4px input-small" type="text" name="city" required>
                                 </div>
                                 <div class="col-12 mb-20px">
-                                    <label class="mb-10px" for="state1">State <span class="text-red">*</span></label>
-                                    <select name="state" id="state1" class="form-select select-small border-radius-4px">
+                                    <label class="mb-10px" for="state">State <span class="text-red">*</span></label>
+                                    <select name="state" id="state" class="form-select select-small border-radius-4px">
                                         <option>Select a state</option>
                                     </select>
                                 </div>
                                 <div class="col-12 mb-20px">
                                     <label class="mb-10px">ZIP <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small" type="text" required>
+                                    <input class="border-radius-4px input-small" type="text" name="zip" required>
                                 </div>
                                 <div class="col-12 mb-20px">
                                     <label class="mb-10px">Phone <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small" type="text" required>
+                                    <input class="border-radius-4px input-small" type="text" name="phone" required>
                                 </div>
                                 <div class="col-12 mb-20px">
                                     <label class="mb-10px">Email address <span class="text-red">*</span></label>
-                                    <input class="border-radius-4px input-small" type="email" required>
+                                    <input class="border-radius-4px input-small" type="email" name="email" required>
                                 </div>
                                 <!-- start tab content -->    
                                 <div class="col-md-12 mb-5px checkout-accordion"> 
                                     <div class="position-relative terms-condition-box text-start d-flex align-items-center">
                                         <label>
-                                            <input type="checkbox" name="terms_condition" id="terms_condition1" value="1" class="terms-condition check-box align-middle">
+                                            <input type="checkbox" name="create_account" id="create_account" value="1" class="terms-condition check-box align-middle">
                                             <span class="box">Create an account?</span>
                                             <a class="accordion-toggle" data-bs-toggle="collapse" data-bs-parent="#accordion1" href="#collapseThree"></a>
                                         </label>
@@ -318,16 +358,16 @@
                                     <div id="collapseThree" class="collapse">
                                         <div class="ps-30px mb-30px mt-15px">
                                             <label class="mb-10px">Account username <span class="text-red">*</span></label>
-                                            <input class="border-radius-4px input-small mb-15px" type="email" required>
+                                            <input class="border-radius-4px input-small mb-15px" type="text" name="username">
                                             <label class="mb-10px">Create account password <span class="text-red">*</span></label>
-                                            <input class="border-radius-4px input-small" type="email" required>     
+                                            <input class="border-radius-4px input-small" type="password" name="password">     
                                         </div>
                                     </div>
                                 </div>
                                 <!-- end tab content -->
                                 <div class="col-12">
                                     <label class="mb-10px">Order notes (optional)</label>
-                                    <textarea class="border-radius-4px textarea-small" rows="5" cols="5" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
+                                    <textarea class="border-radius-4px textarea-small" name="order_notes" rows="5" cols="5" placeholder="Notes about your order, e.g. special notes for delivery."></textarea>
                                 </div>
                             </div>
                         </form>
@@ -341,32 +381,53 @@
                                         <th class="w-60 lg-w-55 xs-w-50 fw-600 text-dark-gray alt-font">Product</th>
                                         <td class="fw-600 text-dark-gray alt-font">Total</td>
                                     </tr>
-                                    <tr class="product">
-                                        <td class="product-thumbnail">
-                                            <a href="demo-jewellery-store-single-product.html" class="text-dark-gray fw-500 d-block lh-initial">Zebra earrings x 1</a>
-                                            <span class="fs-14 d-block">Color: Pink</span>
-                                        </td>
-                                        <td class="product-price" data-title="Price">${{ item_price }}</td>
-                                    </tr>
+                                    {% if checkout_items %}
+                                        {% for item in checkout_items %}
+                                            <tr class="product">
+                                                <td class="product-thumbnail">
+                                                    <a href="{{ item.url }}" class="text-dark-gray fw-500 d-block lh-initial">{{ item.name }} x {{ item.quantity }}</a>
+                                                    {% if item.color %}<span class="fs-14 d-block">Color: {{ item.color }}</span>{% endif %}
+                                                </td>
+                                                <td class="product-price" data-title="Price">{{ item.total }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr class="product">
+                                            <td class="product-thumbnail">
+                                                <a href="#" class="text-dark-gray fw-500 d-block lh-initial">Zebra earrings x 1</a>
+                                                <span class="fs-14 d-block">Color: Pink</span>
+                                            </td>
+                                            <td class="product-price" data-title="Price">${{ item_price|default('30.00') }}</td>
+                                        </tr>
+                                    {% endif %}
                                     <tr>
                                         <th class="w-50 fw-600 text-dark-gray alt-font">Subtotal</th>
-                                        <td class="text-dark-gray fw-600">${{ subtotal }}</td>
+                                        <td class="text-dark-gray fw-600">${{ subtotal|default('30.00') }}</td>
                                     </tr>
                                     <tr class="shipping">
                                         <th class="fw-600 text-dark-gray alt-font">Shipping</th>
                                         <td data-title="Shipping">
                                             <ul class="p-0">
-                                                <li class="d-flex align-items-center">
-                                                    <input id="free_shipping" type="radio" name="shipping-option" class="d-block w-auto mb-0 me-10px p-0" checked="checked">
-                                                    <label class="md-line-height-18px" for="free_shipping">Free shipping</label>
-                                                </li>
+                                                {% if shipping_options %}
+                                                    {% for option in shipping_options %}
+                                                        <li class="d-flex align-items-center">
+                                                            <input id="{{ option.id }}" type="radio" name="shipping-option" class="d-block w-auto mb-0 me-10px p-0" {% if option.checked %}checked="checked"{% endif %}>
+                                                            <label class="md-line-height-18px" for="{{ option.id }}">{{ option.name }}</label>
+                                                        </li>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <li class="d-flex align-items-center">
+                                                        <input id="free_shipping" type="radio" name="shipping-option" class="d-block w-auto mb-0 me-10px p-0" checked="checked">
+                                                        <label class="md-line-height-18px" for="free_shipping">Free shipping</label>
+                                                    </li>
+                                                {% endif %}
                                             </ul>
                                         </td>
                                     </tr> 
                                     <tr class="total-amount">
                                         <th class="fw-600 text-dark-gray alt-font">Total</th>
                                         <td data-title="Total">
-                                            <h6 class="d-block fw-700 mb-0 text-dark-gray alt-font">${{ total }}</h6>
+                                            <h6 class="d-block fw-700 mb-0 text-dark-gray alt-font">${{ total|default('30.00') }}</h6>
                                             <span class="fs-14">(Includes tax)</span>
                                         </td>
                                     </tr>
@@ -391,10 +452,10 @@
                             <div class="position-relative terms-condition-box text-start d-flex align-items-center">
                                 <label>
                                     <input type="checkbox" name="terms_condition" id="terms_condition3" value="1" class="terms-condition check-box align-middle p-0">
-                                    <span class="box fs-14 lh-24">I have agree to the website <a href="#" class="text-decoration-line-bottom text-dark-gray fw-500">terms and conditions.</a></span>
+                                    <span class="box fs-14 lh-24">I have agree to the website <a href="{{ terms_url|default('#') }}" class="text-decoration-line-bottom text-dark-gray fw-500">terms and conditions.</a></span>
                                 </label>
                             </div>
-                            <a href="#" class="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 mt-30px">
+                            <a href="{{ place_order_url|default('#') }}" class="btn btn-dark-gray btn-large btn-switch-text btn-round-edge btn-box-shadow w-100 mt-30px">
                                 <span>
                                     <span class="btn-double-text" data-text="Place order">Place order</span>
                                 </span>
@@ -408,11 +469,88 @@
         <section class="p-0 position-relative">
             <div class="container-fluid p-0">
                 <div class="row row-cols-3 row-cols-md-6 instagram-follow-api position-relative g-0">
-                    <div class="col instafeed-grid">
-                        <figure class="border-radius-0px"><a href="https://www.instagram.com" target="_blank"><img src="https://placehold.co/445x445" class="insta-image" alt=""><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
-                    </div>  
+                    {% if instagram_feed %}
+                        {% for item in instagram_feed %}
+                            <div class="col instafeed-grid">
+                                <figure class="border-radius-0px"><a href="{{ item.url|default('https://www.instagram.com') }}" target="_blank"><img src="{{ item.image }}" class="insta-image" alt="{{ item.alt|default('Instagram image') }}"><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col instafeed-grid">
+                            <figure class="border-radius-0px"><a href="https://www.instagram.com" target="_blank"><img src="https://placehold.co/445x445" class="insta-image" alt="Instagram feed"><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </section>
+        
+        <!-- start footer -->
+        <footer class="footer-dark bg-seashell-white pb-0 cover-background" style="background-image: url('{{ footer_bg_image_url|default('/static/images/footer-bg.jpg') }}');">
+            <div class="container">
+                <div class="row justify-content-center mb-4 sm-mb-35px">
+                    <div class="col-6 col-lg-3 last-paragraph-no-margin order-sm-1 md-mb-50px xs-mb-30px">
+                        <a href="{{ home_url|default('/') }}" class="footer-logo d-inline-block mb-20px"><img src="{{ logo_url|default('/static/images/logo.png') }}" alt="{{ site_title|default('Jewelry Store') }}"></a>
+                        <span class="lh-22 alt-font fw-500 text-dark-gray d-block w-80 lg-w-100 mb-15px">{{ support_text|default('We provide the best customer service and support for all your jewelry needs.') }}</span>
+                        <div class="fs-16 text-brown"><i class="feather icon-feather-phone-call icon-small me-10px xs-me-5px text-dark-gray"></i><a href="tel:{{ phone_number|default('+1 (800) 123-4567') }}">{{ phone_number|default('+1 (800) 123-4567') }}</a></div>
+                        <div class="fs-16"><i class="feather icon-feather-mail icon-small me-10px xs-me-5px text-dark-gray"></i><a href="mailto:{{ email_address|default('info@jewelrystore.com') }}">{{ email_address|default('info@jewelrystore.com') }}</a></div>
+                    </div>
+                    <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ categories_label|default('Categories') }}</span>
+                        <ul class="fs-16">
+                            <li><a href="{{ women_collection_url|default('/shop/women') }}">{{ women_collection|default('Women Collection') }}</a></li>
+                            <li><a href="{{ men_collection_url|default('/shop/men') }}">{{ men_collection|default('Men Collection') }}</a></li>
+                            <li><a href="{{ accessories_url|default('/shop/accessories') }}">{{ accessories|default('Accessories') }}</a></li>
+                            <li><a href="{{ diamond_url|default('/shop/diamond') }}">{{ diamond|default('Diamond') }}</a></li>
+                            <li><a href="{{ gold_jewellery_url|default('/shop/gold') }}">{{ gold_jewellery|default('Gold Jewellery') }}</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ account_label|default('My Account') }}</span>
+                        <ul class="fs-16">
+                            <li><a href="{{ my_profile_url|default('/account/profile') }}">{{ my_profile|default('My Profile') }}</a></li>
+                            <li><a href="{{ order_history_url|default('/account/orders') }}">{{ order_history|default('Order History') }}</a></li>
+                            <li><a href="{{ wish_list_url|default('/account/wishlist') }}">{{ wish_list|default('Wish List') }}</a></li>
+                            <li><a href="{{ order_tracking_url|default('/account/track') }}">{{ order_tracking|default('Order Tracking') }}</a></li>
+                            <li><a href="{{ shopping_cart_url|default('/cart') }}">{{ shopping_cart|default('Shopping Cart') }}</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ information_label|default('Information') }}</span>
+                        <ul class="fs-16">
+                            <li><a href="{{ about_us_url|default('/about') }}">{{ about_us|default('About Us') }}</a></li>
+                            <li><a href="{{ careers_url|default('/careers') }}">{{ careers|default('Careers') }}</a></li>
+                            <li><a href="{{ events_url|default('/events') }}">{{ events|default('Events') }}</a></li>
+                            <li><a href="{{ articles_url|default('/articles') }}">{{ articles|default('Articles') }}</a></li>
+                            <li><a href="{{ contact_us_url|default('/contact') }}">{{ contact_us|default('Contact Us') }}</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-3 col-sm-6 ps-30px sm-ps-15px md-mb-50px xs-mb-0 order-sm-2 order-lg-5 text-center text-sm-start">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">{{ connect_with_us_label|default('Connect with Us') }}</span>
+                        <div class="elements-social social-icon-style-09">
+                            <ul class="small-icon dark mb-20px">
+                                <li><a class="facebook" href="{{ facebook_url|default('https://www.facebook.com/') }}" target="_blank"><i class="fa-brands fa-facebook-f"></i><span></span></a></li>
+                                <li><a class="instagram" href="{{ instagram_url|default('https://www.instagram.com') }}" target="_blank"><i class="fa-brands fa-instagram"></i><span></span></a></li>
+                                <li><a class="twitter" href="{{ twitter_url|default('https://www.twitter.com') }}" target="_blank"><i class="fa-brands fa-twitter"></i><span></span></a></li>
+                                <li><a class="dribbble" href="{{ dribbble_url|default('http://www.dribbble.com') }}" target="_blank"><i class="fa-brands fa-dribbble"></i><span></span></a></li>
+                            </ul>
+                        </div>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">{{ secure_payment_label|default('Secure Payment') }}</span>
+                        <div class="footer-card d-block d-sm-flex align-items-center">
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ visa_logo_url|default('/static/images/visa.svg') }}" class="h-25px" alt="Visa"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ mastercard_logo_url|default('/static/images/mastercard.svg') }}" class="h-25px" alt="Mastercard"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ american_express_logo_url|default('/static/images/american-express.svg') }}" class="h-25px" alt="American Express"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ discover_logo_url|default('/static/images/discover.svg') }}" class="h-25px" alt="Discover"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ diners_club_logo_url|default('/static/images/diners-club.svg') }}" class="h-25px" alt="Diners Club"></a>
+                        </div>
+                    </div> 
+                </div>
+            </div> 
+        </footer>
+        <!-- end footer -->
+        
+        <!-- javascript libraries -->
+        <script type="text/javascript" src="{{ js_jquery_url|default('/static/js/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ js_vendors_url|default('/static/js/vendors.min.js') }}"></script>
+        <script type="text/javascript" src="{{ js_main_url|default('/static/js/main.js') }}"></script>
     </body>
 </html>

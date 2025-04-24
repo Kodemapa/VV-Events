@@ -1,26 +1,26 @@
 ﻿<!doctype html>
 <html class="no-js" lang="en">
     <head>
-        <title>{{ site_title|default('Crafto - The Multipurpose HTML5 Template') }}</title>
+        <title>{{ page_title|default('Crafto - The Multipurpose HTML5 Template') }}</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="author" content="{{ author|default('ThemeZaa') }}">
+        <meta name="author" content="{{ site_author|default('ThemeZaa') }}">
         <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-        <meta name="description" content="{{ site_description|default('Elegant jewelry store with a wide collection of rings, earrings, necklaces, and bracelets.') }}">
+        <meta name="description" content="{{ meta_description|default('Elevate your online presence with Crafto - a modern, versatile, multipurpose Bootstrap 5 responsive HTML5, SCSS template using highly creative 52+ ready demos.') }}">
         <!-- favicon icon -->
-        <link rel="shortcut icon" href="{{ static_url('images/favicon.png') }}">
-        <link rel="apple-touch-icon" href="{{ static_url('images/apple-touch-icon-57x57.png') }}">
-        <link rel="apple-touch-icon" sizes="72x72" href="{{ static_url('images/apple-touch-icon-72x72.png') }}">
-        <link rel="apple-touch-icon" sizes="114x114" href="{{ static_url('images/apple-touch-icon-114x114.png') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.png') }}">
+        <link rel="apple-touch-icon" href="{{ url_for('static', filename='images/apple-touch-icon-57x57.png') }}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ url_for('static', filename='images/apple-touch-icon-72x72.png') }}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='images/apple-touch-icon-114x114.png') }}">
         <!-- google fonts preconnect -->
         <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <!-- style sheets and font icons  -->
-        <link rel="stylesheet" href="{{ static_url('css/vendors.min.css') }}"/>
-        <link rel="stylesheet" href="{{ static_url('css/icon.min.css') }}"/>
-        <link rel="stylesheet" href="{{ static_url('css/style.css') }}"/>
-        <link rel="stylesheet" href="{{ static_url('css/responsive.css') }}"/>
-        <link rel="stylesheet" href="{{ static_url('demos/jewellery-store/jewellery-store.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/vendors.min.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/icon.min.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/responsive.css') }}"/>
+        <link rel="stylesheet" href="{{ url_for('static', filename='demos/jewellery-store/jewellery-store.css') }}" />
     </head>
     <body data-mobile-nav-style="classic">
         <!-- start header -->
@@ -30,7 +30,7 @@
                 <div class="container-fluid">
                     <div class="row h-40px align-items-center m-0">
                         <div class="col-12 justify-content-center alt-font">
-                            <div class="fs-13 text-white text-uppercase">{{ promo_message|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>
+                            <div class="fs-13 text-white text-uppercase">{{ shipping_offer|default('Free shipping on all orders $50, don\'t miss discount.') }}</div>
                             <a href="{{ offer_link|default('#') }}" class="fs-13 fw-500 text-base-color text-base-color-hover text-uppercase ms-5px"><i class="feather icon-feather-bookmark icon-small align-middle"></i> <span class="text-decoration-line-bottom">{{ offer_text|default('Get offers') }}</span></a>
                         </div>
                     </div>
@@ -49,47 +49,81 @@
                         </button>
                         <div class="collapse navbar-collapse" id="navbarNav"> 
                             <ul class="navbar-nav alt-font"> 
-                                {% for item in nav_items %}
-                                <li class="nav-item {{ 'dropdown submenu' if item.dropdown }}">
-                                    <a href="/{{ item.url }}" class="nav-link">{{ item.name }}</a>
-                                    {% if item.dropdown %}
-                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink{{ loop.index }}" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
-                                        {% if item.mega_menu %}
+                                <li class="nav-item"><a href="{{ home_url|default('demo-jewellery-store.html') }}" class="nav-link">Home</a></li>
+                                <li class="nav-item dropdown submenu">
+                                    <a href="{{ shop_url|default('demo-jewellery-store-shop.html') }}" class="nav-link">Shop</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink1" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink1"> 
                                         <div class="d-lg-flex mega-menu m-auto flex-column">
                                             <div class="row row-cols-1 row-cols-lg-5 mb-50px md-mb-20px">
-                                                {% for category in item.categories %}
                                                 <div class="col md-mb-5px">
                                                     <ul>  
-                                                        <li class="sub-title">{{ category.name }}</li>
-                                                        {% for subitem in category.subitems %}
-                                                        <li><a href="/shop/{{ category.name|lower }}/{{ subitem|lower }}">{{ subitem }}</a></li>
+                                                        <li class="sub-title">Rings</li>
+                                                        {% for ring in rings %}
+                                                        <li><a href="{{ ring.url }}">{{ ring.name }}</a></li>
                                                         {% endfor %}
                                                     </ul>
                                                 </div>
-                                                {% endfor %}
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">Earrings</li>
+                                                        {% for earring in earrings %}
+                                                        <li><a href="{{ earring.url }}">{{ earring.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">Necklaces</li>
+                                                        {% for necklace in necklaces %}
+                                                        <li><a href="{{ necklace.url }}">{{ necklace.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="col md-mb-5px">
+                                                    <ul>  
+                                                        <li class="sub-title">Pendants</li>
+                                                        {% for pendant in pendants %}
+                                                        <li><a href="{{ pendant.url }}">{{ pendant.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
+                                                <div class="col">
+                                                    <ul>  
+                                                        <li class="sub-title">Bracelets</li>
+                                                        {% for bracelet in bracelets %}
+                                                        <li><a href="{{ bracelet.url }}">{{ bracelet.name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                </div>
                                             </div>
                                             <div class="row row-cols-1 row-cols-md-2">
-                                                {% for banner in item.banners %}
                                                 <div class="col">
-                                                    <a href="/{{ banner.url }}"><img src="{{ banner.image }}" class="border-radius-4px w-100" alt="{{ banner.alt }}"></a>
+                                                    <a href="{{ shop_url|default('demo-jewellery-store-shop.html') }}"><img src="https://placehold.co/580x160" class="border-radius-4px w-100" alt=""></a>
                                                 </div>
-                                                {% endfor %}
+                                                <div class="col">
+                                                    <a href="{{ shop_url|default('demo-jewellery-store-shop.html') }}"><img src="https://placehold.co/580x160" class="border-radius-4px w-100" alt=""></a>
+                                                </div>
                                             </div>
-                                        </div>
-                                        {% elif item.categories_grid %}
+                                        </div> 
+                                    </div>
+                                </li> 
+                                <li class="nav-item dropdown submenu">
+                                    <a href="{{ categories_url|default('demo-jewellery-store-categories.html') }}" class="nav-link">Categories</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink2" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <div class="dropdown-menu submenu-content" aria-labelledby="navbarDropdownMenuLink2"> 
                                         <div class="mega-menu m-auto">
                                             <div class="row md-m-0">
                                                 <div class="col-12 col-lg-9">
                                                     <div class="row row-cols-1 row-cols-lg-4 align-items-center justify-content-center">
-                                                        {% for category in item.grid_categories %}
+                                                        {% for category in categories %}
                                                         <div class="col mb-20px md-mb-10px text-start text-lg-center">
-                                                            <a href="/categories/{{ category.name|lower }}" class="d-none d-lg-block"> 
-                                                                <img src="{{ category.image }}" class="border-radius-4px mb-5px" alt="{{ category.name }}">  
+                                                            <a href="{{ category.url }}" class="d-none d-lg-block"> 
+                                                                <img src="{{ category.image|default('https://placehold.co/190x140') }}" class="border-radius-4px mb-5px" alt="{{ category.title }}">  
                                                             </a>
-                                                            <a href="/categories/{{ category.name|lower }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
+                                                            <a href="{{ category.url }}" class="btn btn-hover-animation fw-500 text-uppercase-inherit justify-content-center pt-0 pb-0 text-start text-lg-center">
                                                                 <span> 
-                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ category.name }}</span> 
+                                                                    <span class="btn-text text-dark-gray fs-17 flex-shrink-0">{{ category.title }}</span> 
                                                                     <span class="btn-icon"><i class="fa-solid fa-arrow-right icon-very-small w-auto"></i></span>
                                                                 </span>
                                                             </a> 
@@ -99,36 +133,41 @@
                                                 </div>
                                                 <div class="col-lg-3 col-md-4 d-none d-lg-flex">
                                                     <div>
-                                                        <a href="/categories"><img src="{{ item.featured_image }}" class="border-radius-4px" alt="Featured Category"></a>
+                                                        <a href="{{ categories_url|default('demo-jewellery-store-categories.html') }}"><img src="https://placehold.co/290x380" class="border-radius-4px" alt=""></a>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        {% else %}
-                                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink{{ loop.index }}"> 
-                                            {% for subitem in item.subitems %}
-                                            <li><a href="/{{ subitem.url }}">{{ subitem.name }}</a></li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
+                                        </div> 
                                     </div>
-                                    {% endif %}
+                                </li> 
+                                <li class="nav-item dropdown simple-dropdown">
+                                    <a href="javascript:void(0);" class="nav-link">Pages</a>
+                                    <i class="fa-solid fa-angle-down dropdown-toggle" id="navbarDropdownMenuLink3" role="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink3"> 
+                                        <li><a href="{{ about_url|default('demo-jewellery-store-about.html') }}">About</a></li>
+                                        <li><a href="{{ faq_url|default('demo-jewellery-store-faq.html') }}">Faq</a></li>
+                                        <li><a href="{{ wishlist_url|default('demo-jewellery-store-wishlist.html') }}">Wishlist</a></li>
+                                        <li><a href="{{ account_url|default('demo-jewellery-store-account.html') }}">Account</a></li>
+                                        <li><a href="{{ cart_url|default('demo-jewellery-store-cart.html') }}">Cart</a></li>
+                                        <li><a href="{{ checkout_url|default('demo-jewellery-store-checkout.html') }}">Checkout</a></li>
+                                    </ul>
                                 </li>
-                                {% endfor %}
+                                <li class="nav-item"><a href="{{ blog_url|default('demo-jewellery-store-blog.html') }}" class="nav-link">Blog</a></li>
+                                <li class="nav-item"><a href="{{ contact_url|default('demo-jewellery-store-contact.html') }}" class="nav-link">Contact</a></li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-2 justify-content-end justify-content-lg-center">
-                        <a class="navbar-brand" href="/">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="default-logo">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="alt-logo">
-                            <img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="mobile-logo"> 
+                        <a class="navbar-brand" href="{{ home_url|default('demo-jewellery-store.html') }}">
+                            <img src="{{ url_for('static', filename='images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ url_for('static', filename='images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="default-logo">
+                            <img src="{{ url_for('static', filename='images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ url_for('static', filename='images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="alt-logo">
+                            <img src="{{ url_for('static', filename='images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ url_for('static', filename='images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}" class="mobile-logo"> 
                         </a>
                     </div>
                     <div class="col-auto col-lg-5 justify-content-end ms-auto md-pe-0">
                         <div class="header-icon">
                             <div class="widget-text icon alt-font fw-500 d-none d-sm-flex">
-                                <a href="/wishlist">Wishlist</a>
+                                <a href="{{ wishlist_url|default('demo-jewellery-store-wishlist.html') }}">Wishlist</a>
                             </div>
                             <div class="header-account-icon icon alt-font">
                                 <div class="header-account dropdown"> 
@@ -138,7 +177,7 @@
                                     </a>
                                     <ul class="account-item-list">
                                         {% for account_item in account_items %}
-                                        <li class="account-item"><a href="/{{ account_item.url }}">{{ account_item.name }}</a></li>
+                                        <li class="account-item"><a href="{{ account_item.url }}">{{ account_item.name }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div> 
@@ -147,10 +186,10 @@
                                 <a href="javascript:void(0)" class="search-form-icon header-search-form xs-ps-10px"><i class="feather icon-feather-search"></i></a> 
                                 <div class="search-form-wrapper">
                                     <button title="Close" type="button" class="search-close alt-font">×</button>
-                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="/search">
+                                    <form id="search-form" role="search" method="get" class="search-form text-left" action="{{ search_result_url|default('search-result.html') }}">
                                         <div class="search-form-box">
-                                            <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">What are you looking for?</h2>
-                                            <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="Enter your keywords..." name="s" value="" type="text" autocomplete="off">
+                                            <h2 class="text-dark-gray text-center mb-5 alt-font fw-600 ls-minus-2px">{{ search_heading|default('What are you looking for?') }}</h2>
+                                            <input class="search-input alt-font" id="search-form-input5e219ef164995" placeholder="{{ search_placeholder|default('Enter your keywords...') }}" name="s" value="" type="text" autocomplete="off">
                                             <button type="submit" class="search-button">
                                                 <i class="feather icon-feather-search" aria-hidden="true"></i> 
                                             </button>
@@ -160,24 +199,24 @@
                             </div>
                             <div class="header-cart-icon icon">
                                 <div class="header-cart dropdown">
-                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_items|length }}</span></a> 
+                                    <a href="javascript:void(0);"><i class="feather icon-feather-shopping-bag"></i><span class="cart-count alt-font text-da">{{ cart_count|default('2') }}</span></a> 
                                     <ul class="cart-item-list">
-                                        {% for item in cart_items %}
+                                        {% for cart_item in cart_items %}
                                         <li class="cart-item align-items-center">
                                             <a href="javascript:void(0);" class="alt-font close">×</a>
                                             <div class="product-image">
-                                                <a href="/product/{{ item.id }}"><img src="{{ item.image }}" class="cart-thumb" alt="{{ item.name }}"></a>
+                                                <a href="{{ cart_item.url }}"><img src="{{ cart_item.image }}" class="cart-thumb" alt="{{ cart_item.name }}"></a>
                                             </div>
                                             <div class="product-detail alt-font">
-                                                <a href="/product/{{ item.id }}">{{ item.name }}</a>
-                                                <span class="item-ammount">${{ "%.2f"|format(item.price) }}</span> 
+                                                <a href="{{ cart_item.url }}">{{ cart_item.name }}</a>
+                                                <span class="item-ammount">{{ cart_item.price }}</span> 
                                             </div>
                                         </li>
                                         {% endfor %}
                                         <li class="cart-total">
-                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">${{ "%.2f"|format(cart_total) }}</span></div>
-                                            <a href="/cart" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
-                                            <a href="/checkout" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
+                                            <div class="alt-font mb-15px"><span class="w-50">Subtotal:</span><span class="w-50 text-end fw-600">{{ subtotal|default('$199.99') }}</span></div>
+                                            <a href="{{ cart_url|default('demo-jewellery-store-cart.html') }}" class="btn btn-large btn-transparent-base-color border-color-extra-medium-gray btn-round-edge">View cart</a>
+                                            <a href="{{ checkout_url|default('demo-jewellery-store-checkout.html') }}" class="btn btn-large btn-dark-gray btn-box-shadow btn-round-edge">Checkout</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -189,18 +228,18 @@
         </header>
         <!-- end header -->
         <!-- start page title -->
-        <section class="half-section top-space-margin cover-background" style="background-image: url({{ account_page_title_bg|default('https://placehold.co/1920x470') }})">
+        <section class="half-section top-space-margin cover-background" style="background-image: url({{ page_title_image_url|default('https://placehold.co/1920x470') }})">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-md-8 text-center position-relative page-title-extra-large">
                         <div class="d-flex flex-column extra-very-small-screen">
                             <div class="mt-auto">
-                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ account_page_title|default('My account') }}</h1>
+                                <h1 class="fw-500 text-dark-gray alt-font mb-0 ls-minus-2px">{{ page_heading|default('My account') }}</h1>
                             </div>
                             <div class="fs-16 fw-500 alt-font text-dark-gray justify-content-center breadcrumb breadcrumb-style-01 mt-auto">
                                 <ul>
-                                    <li><a href="/" class="text-dark-gray text-medium-gray-hover">{{ home_label|default('Home') }}</a></li>
-                                    <li>{{ account_page_title|default('My account') }}</li>
+                                    <li><a href="{{ home_url|default('demo-jewellery-store.html') }}" class="text-dark-gray text-medium-gray-hover">{{ home_label|default('Home') }}</a></li>
+                                    <li>{{ page_name|default('My account') }}</li>
                                 </ul>
                             </div>
                         </div>
@@ -214,7 +253,7 @@
             <div class="container">
                 <div class="row g-0 justify-content-center">
                     <div class="col-xl-4 col-lg-5 col-md-10 contact-form-style-04 md-mb-50px" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":100, "staggervalue": 150, "easing": "easeOutQuad" }'>
-                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ login_title|default('Member login') }}</span>
+                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ login_heading|default('Member login') }}</span>
                         <form action="{{ login_form_action|default('email-templates/contact-form.php') }}" method="post">
                             <label class="text-dark-gray mb-10px fw-500">{{ username_label|default('Username or email address') }}<span class="text-red">*</span></label> 
                             <input class="mb-20px bg-very-light-gray form-control required" type="email" name="name" placeholder="{{ username_placeholder|default('Enter your username') }}" />
@@ -223,17 +262,17 @@
                             <div class="position-relative terms-condition-box text-start d-flex align-items-center mb-20px">
                                 <label>
                                     <input type="checkbox" name="terms_condition" id="terms_condition" value="1" class="terms-condition check-box align-middle required">
-                                    <span class="box fs-14">{{ remember_me_label|default('Remember me') }}</span>
+                                    <span class="box fs-14">{{ remember_me_text|default('Remember me') }}</span>
                                 </label>
-                                <a href="{{ forgot_password_url|default('#') }}" class="fs-14 text-dark-gray fw-500 text-decoration-line-bottom ms-auto">{{ forgot_password_label|default('Forget your password?') }}</a>
+                                <a href="{{ forgot_password_url|default('#') }}" class="fs-14 text-dark-gray fw-500 text-decoration-line-bottom ms-auto">{{ forgot_password_text|default('Forget your password?') }}</a>
                             </div>
-                            <input type="hidden" name="redirect" value="">
+                            <input type="hidden" name="redirect" value="{{ login_redirect|default('') }}">
                             <button class="btn btn-medium btn-round-edge btn-dark-gray btn-box-shadow submit w-100" type="submit">{{ login_button_text|default('Login') }}</button> 
                             <div class="form-results mt-20px d-none"></div>
                         </form>
                     </div>
                     <div class="col-lg-6 col-md-10 offset-xl-2 offset-lg-1 p-6 box-shadow-extra-large border-radius-6px" data-anime='{ "translateY": [0, 0], "opacity": [0,1], "duration": 600, "delay":150, "staggervalue": 150, "easing": "easeOutQuad" }'>
-                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ register_title|default('Create an account') }}</span>
+                        <span class="fs-26 xs-fs-24 alt-font fw-600 text-dark-gray mb-20px d-block">{{ register_heading|default('Create an account') }}</span>
                         <form action="{{ register_form_action|default('email-templates/contact-form.php') }}" method="post">
                             <label class="text-dark-gray mb-10px fw-500">{{ register_username_label|default('Username') }}<span class="text-red">*</span></label> 
                             <input class="mb-20px bg-very-light-gray form-control required" type="text" name="name" placeholder="{{ register_username_placeholder|default('Enter your username') }}" />
@@ -241,8 +280,8 @@
                             <input class="mb-20px bg-very-light-gray form-control required" type="email" name="email" placeholder="{{ register_email_placeholder|default('Enter your email') }}" />
                             <label class="text-dark-gray mb-10px fw-500">{{ register_password_label|default('Password') }}<span class="text-red">*</span></label> 
                             <input class="mb-20px bg-very-light-gray form-control required" type="password" name="password" placeholder="{{ register_password_placeholder|default('Enter your password') }}" /> 
-                            <span class="fs-13 lh-22 w-90 lg-w-100 md-w-90 sm-w-100 d-block mb-30px">{{ privacy_notice|default('Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our') }} <a href="{{ privacy_policy_url|default('#') }}" class="text-dark-gray text-decoration-line-bottom fw-500">{{ privacy_policy_label|default('privacy policy') }}.</a></span>
-                            <input type="hidden" name="redirect" value="">
+                            <span class="fs-13 lh-22 w-90 lg-w-100 md-w-90 sm-w-100 d-block mb-30px">{{ privacy_notice|default('Your personal data will be used to support your experience throughout this website, to manage access to your account, and for other purposes described in our') }} <a href="{{ privacy_policy_url|default('#') }}" class="text-dark-gray text-decoration-line-bottom fw-500">{{ privacy_policy_text|default('privacy policy.') }}</a></span>
+                            <input type="hidden" name="redirect" value="{{ register_redirect|default('') }}">
                             <button class="btn btn-medium btn-round-edge btn-dark-gray btn-box-shadow submit w-100" type="submit">{{ register_button_text|default('Register') }}</button>
                             <div class="form-results mt-20px d-none"></div>
                         </form>
@@ -255,57 +294,82 @@
         <section class="p-0 position-relative">
             <div class="container-fluid p-0">
                 <div class="row row-cols-3 row-cols-md-6 instagram-follow-api position-relative g-0">
-                    {% for insta in instagram_images %}
+                    {% for insta_item in instagram_feed %}
                     <div class="col instafeed-grid">
-                        <figure class="border-radius-0px"><a href="{{ insta.url|default('https://www.instagram.com') }}" target="_blank"><img src="{{ insta.image }}" class="insta-image" alt=""><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
+                        <figure class="border-radius-0px"><a href="{{ instagram_url|default('https://www.instagram.com') }}" target="_blank"><img src="{{ insta_item.image }}" class="insta-image" alt=""><span class="insta-icon"><i class="fa-brands fa-instagram"></i></span></a></figure>
                     </div>  
                     {% endfor %}
-                    <a href="{{ instagram_profile_url|default('https://www.instagram.com') }}" target="_blank" class="instagram-button alt-font absolute-middle-center bg-white w-120px h-120px md-w-90px md-h-90px text-dark-gray border-radius-100px box-shadow-extra-large d-flex align-items-center justify-content-center"><i class="feather icon-feather-instagram icon-medium"></i></a>
+                    <a href="{{ instagram_url|default('https://www.instagram.com') }}" target="_blank" class="instagram-button alt-font absolute-middle-center bg-white w-120px h-120px md-w-90px md-h-90px text-dark-gray border-radius-100px box-shadow-extra-large d-flex align-items-center justify-content-center"><i class="feather icon-feather-instagram icon-medium"></i></a>
                 </div> 
             </div>
         </section>
         <!-- end section -->
         <!-- start footer -->
-        <footer class="footer-dark bg-seashell-white pb-0 cover-background" style="background-image: url('{{ static_url('images/demo-jewellery-store-footer-bg.jpg') }}');">
+        <footer class="footer-dark bg-seashell-white pb-0 cover-background" style="background-image: url('{{ footer_bg_image_url|default(url_for('static', filename='images/demo-jewellery-store-footer-bg.jpg')) }}');">
             <div class="container">
                 <div class="row justify-content-center mb-4 sm-mb-35px">
                     <!-- start footer column -->
                     <div class="col-6 col-lg-3 last-paragraph-no-margin order-sm-1 md-mb-50px xs-mb-30px">
-                        <a href="/" class="footer-logo d-inline-block mb-20px"><img src="{{ static_url('images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ static_url('images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}"></a>
-                        <span class="lh-22 alt-font fw-500 text-dark-gray d-block w-80 lg-w-100 mb-15px">{{ footer_description|default('Please reach out to when you need support.') }}</span>
-                        <div class="fs-16 text-brown"><i class="feather icon-feather-phone-call icon-small me-10px xs-me-5px text-dark-gray"></i><a href="tel:{{ contact_phone|default('11234567890') }}">+{{ contact_phone|default('1 1234567890') }}</a></div>
-                        <div class="fs-16"><i class="feather icon-feather-mail icon-small me-10px xs-me-5px text-dark-gray"></i><a href="mailto:{{ contact_email|default('info@domain.com') }}">{{ contact_email|default('info@domain.com') }}</a></div>
+                        <a href="{{ home_url|default('demo-jewellery-store.html') }}" class="footer-logo d-inline-block mb-20px"><img src="{{ url_for('static', filename='images/demo-jewellery-store-logo-black.png') }}" data-at2x="{{ url_for('static', filename='images/demo-jewellery-store-logo-black@2x.png') }}" alt="{{ site_title }}"></a>
+                        <span class="lh-22 alt-font fw-500 text-dark-gray d-block w-80 lg-w-100 mb-15px">{{ support_text|default('Please reach out to when you need support.') }}</span>
+                        <div class="fs-16 text-brown"><i class="feather icon-feather-phone-call icon-small me-10px xs-me-5px text-dark-gray"></i><a href="tel:{{ phone_number|default('11234567890') }}">{{ phone_number_display|default('+1 1234567890') }}</a></div>
+                        <div class="fs-16"><i class="feather icon-feather-mail icon-small me-10px xs-me-5px text-dark-gray"></i><a href="mailto:{{ email_address|default('info@domain.com') }}">{{ email_address|default('info@domain.com') }}</a></div>
                     </div>
                     <!-- end footer column -->
-                    
-                    {% for footer_col in footer_columns %}
                     <!-- start footer column -->
                     <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
-                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ footer_col.title }}</span>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ categories_label|default('Categories') }}</span>
                         <ul class="fs-16">
-                            {% for link in footer_col.links %}
-                            <li><a href="/{{ link.url }}">{{ link.name }}</a></li>
-                            {% endfor %}
+                            <li><a href="{{ women_collection_url|default('demo-jewellery-store-shop.html') }}">{{ women_collection|default('Women collection') }}</a></li>
+                            <li><a href="{{ men_collection_url|default('demo-jewellery-store-shop.html') }}">{{ men_collection|default('Men collection') }}</a></li>
+                            <li><a href="{{ accessories_url|default('demo-jewellery-store-shop.html') }}">{{ accessories|default('Accessories') }}</a></li>
+                            <li><a href="{{ diamond_url|default('demo-jewellery-store-shop.html') }}">{{ diamond|default('Diamond') }}</a></li>
+                            <li><a href="{{ gold_jewellery_url|default('demo-jewellery-store-shop.html') }}">{{ gold_jewellery|default('Gold jewellery') }}</a></li>
                         </ul>
                     </div>
                     <!-- end footer column -->
-                    {% endfor %}
-                    
+                    <!-- start footer column -->
+                    <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ account_label|default('Account') }}</span>
+                        <ul class="fs-16">
+                            <li><a href="{{ my_profile_url|default('#') }}">{{ my_profile|default('My profile') }}</a></li>
+                            <li><a href="{{ order_history_url|default('demo-jewellery-store-cart.html') }}">{{ order_history|default('My order history') }}</a></li>
+                            <li><a href="{{ wish_list_url|default('#') }}">{{ wish_list|default('My wish list') }}</a></li>
+                            <li><a href="{{ order_tracking_url|default('#') }}">{{ order_tracking|default('Order tracking') }}</a></li>
+                            <li><a href="{{ shopping_cart_url|default('demo-jewellery-store-cart.html') }}">{{ shopping_cart|default('Shopping cart') }}</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->
+                    <!-- start footer column -->
+                    <div class="col-6 col-lg-2 col-sm-4 xs-mb-30px order-sm-3 order-lg-2">
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-5px">{{ information_label|default('Information') }}</span>
+                        <ul class="fs-16">
+                            <li><a href="{{ about_us_url|default('demo-jewellery-store-about.html') }}">{{ about_us|default('About us') }}</a></li>
+                            <li><a href="{{ careers_url|default('demo-jewellery-store-contact.html') }}">{{ careers|default('Careers') }}</a></li>
+                            <li><a href="{{ events_url|default('#') }}">{{ events|default('Events') }}</a></li>
+                            <li><a href="{{ articles_url|default('#') }}">{{ articles|default('Articles') }}</a></li>
+                            <li><a href="{{ contact_us_url|default('demo-jewellery-store-contact.html') }}">{{ contact_us|default('Contact us') }}</a></li>
+                        </ul>
+                    </div>
+                    <!-- end footer column -->  
                     <!-- start footer column -->
                     <div class="col-lg-3 col-sm-6 ps-30px sm-ps-15px md-mb-50px xs-mb-0 order-sm-2 order-lg-5 text-center text-sm-start">
-                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">Connect with us</span>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">{{ connect_with_us_label|default('Connect with us') }}</span>
                         <div class="elements-social social-icon-style-09">
                             <ul class="small-icon dark mb-20px">
-                                {% for social in social_links %}
-                                <li><a class="{{ social.name|lower }}" href="{{ social.url }}" target="_blank"><i class="{{ social.icon }}"></i><span></span></a></li>
-                                {% endfor %}
+                                <li><a class="facebook" href="{{ facebook_url|default('https://www.facebook.com/') }}" target="_blank"><i class="fa-brands fa-facebook-f"></i><span></span></a></li>
+                                <li><a class="instagram" href="{{ instagram_url|default('http://www.instagram.com') }}" target="_blank"><i class="fa-brands fa-instagram"></i><span></span></a></li>
+                                <li><a class="twitter" href="{{ twitter_url|default('http://www.twitter.com') }}" target="_blank"><i class="fa-brands fa-twitter"></i><span></span></a></li>
+                                <li><a class="dribbble" href="{{ dribbble_url|default('http://www.dribbble.com') }}" target="_blank"><i class="fa-brands fa-dribbble"></i><span></span></a></li>
                             </ul>
                         </div>
-                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">Secure payment</span>
+                        <span class="alt-font fw-500 text-dark-gray d-block mb-10px">{{ secure_payment_label|default('Secure payment') }}</span>
                         <div class="footer-card d-block d-sm-flex align-items-center">
-                            {% for payment in payment_methods %}
-                            <a href="{{ payment.url }}" class="d-inline-block me-5px align-middle"><img src="{{ payment.image }}" class="h-25px" alt="{{ payment.name }}"></a>
-                            {% endfor %}
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ url_for('static', filename='images/visa.svg') }}" class="h-25px" alt="Visa"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ url_for('static', filename='images/mastercard.svg') }}" class="h-25px" alt="Mastercard"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ url_for('static', filename='images/american-express.svg') }}" class="h-25px" alt="American Express"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ url_for('static', filename='images/discover.svg') }}" class="h-25px" alt="Discover"></a>
+                            <a href="#" class="d-inline-block me-5px align-middle"><img src="{{ url_for('static', filename='images/diners-club.svg') }}" class="h-25px" alt="Diners Club"></a>
                         </div>
                     </div>
                     <!-- end footer column -->                        
@@ -318,14 +382,14 @@
                     <!-- end divider -->
                     <!-- start copyright -->
                     <div class="col-md-6 pt-20px pb-20px sm-pt-0 fs-16 order-2 order-md-1 text-center text-md-start last-paragraph-no-margin">
-                        <p>&copy; {{ current_year|default('2024') }} {{ copyright_text|default('Crafto is Proudly Powered by <a href="https://www.themezaa.com/" target="_blank" class="text-decoration-line-bottom text-dark-gray">ThemeZaa</a>') }}</p>
+                        <p>{{ copyright_text|default('&copy; 2024 Crafto is Proudly Powered by <a href="https://www.themezaa.com/" target="_blank" class="text-decoration-line-bottom text-dark-gray">ThemeZaa</a>') }}</p>
                     </div>
                     <!-- end copyright -->
                     <!-- start footer menu -->
                     <div class="col-md-6 pt-20px pb-20px sm-pb-10px fs-16 order-1 order-md-2 text-center text-md-end">
                         <ul class="footer-navbar xs-lh-normal"> 
-                            {% for policy in policy_links %}
-                            <li><a href="/{{ policy.url }}" class="nav-link">{{ policy.name }}</a></li>
+                            {% for legal_link in legal_links %}
+                            <li><a href="{{ legal_link.url }}" class="nav-link">{{ legal_link.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
@@ -335,23 +399,21 @@
         </footer>
         <!-- end footer -->
         <!-- start cookie message -->
-        {% if show_cookie_message %}
         <div id="cookies-model" class="cookie-message bg-dark-gray border-radius-8px"> 
             <div class="cookie-description fs-14 text-white mb-20px lh-22">{{ cookie_message|default('We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffic. By clicking "Allow cookies" you consent to our use of cookies.') }}</div>   
             <div class="cookie-btn">
-                <a href="/cookie_policy" class="btn btn-transparent-white border-1 border-color-transparent-white-light btn-very-small btn-switch-text btn-rounded w-100 mb-15px" aria-label="btn">
+                <a href="#" class="btn btn-transparent-white border-1 border-color-transparent-white-light btn-very-small btn-switch-text btn-rounded w-100 mb-15px" aria-label="btn">
                     <span>
-                        <span class="btn-double-text" data-text="Cookie policy">Cookie policy</span> 
+                        <span class="btn-double-text" data-text="{{ cookie_policy_text|default('Cookie policy') }}">{{ cookie_policy_text|default('Cookie policy') }}</span> 
                     </span>
                 </a> 
                 <a href="#" class="btn btn-white btn-very-small btn-switch-text btn-box-shadow accept_cookies_btn btn-rounded w-100" data-accept-btn aria-label="text">
                     <span>
-                        <span class="btn-double-text" data-text="Allow cookies">Allow cookies</span> 
+                        <span class="btn-double-text" data-text="{{ accept_cookies_text|default('Allow cookies') }}">{{ accept_cookies_text|default('Allow cookies') }}</span> 
                     </span>
                 </a>
             </div> 
         </div>
-        {% endif %}
         <!-- end cookie message -->
         <!-- start scroll progress -->
         <div class="scroll-progress d-none d-xxl-block">
@@ -361,8 +423,8 @@
         </div>
         <!-- end scroll progress -->
         <!-- javascript libraries -->
-        <script type="text/javascript" src="{{ static_url('js/jquery.js') }}"></script>
-        <script type="text/javascript" src="{{ static_url('js/vendors.min.js') }}"></script>
-        <script type="text/javascript" src="{{ static_url('js/main.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/vendors.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='js/main.js') }}"></script>
     </body>
 </html>
